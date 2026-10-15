@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Northfield Admin Panel</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#e8e8e8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh}
+.gold{color:#d4af37}
+.wrap{max-width:900px;margin:0 auto;padding:20px}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid #d4af3733;margin-bottom:20px}
+header h1{font-size:22px}
+header h1 span{color:#d4af37}
+.btn{background:#d4af37;color:#0a0a0a;border:none;padding:10px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px}
+.btn:hover{background:#e8c547}
+.btn-danger{background:#c0392b;color:#fff}
+.btn-small{padding:6px 12px;font-size:12px}
+.card{background:#141414;border:1px solid #d4af3733;border-radius:12px;padding:20px;margin-bottom:16px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;color:#d4af37;margin-bottom:6px;font-weight:600}
+.field input,.field textarea,.field select{width:100%;background:#0a0a0a;border:1px solid #d4af3755;color:#e8e8e8;padding:10px 12px;border-radius:8px;font-size:14px}
+.field textarea{min-height:80px;resize:vertical}
+.product-row{display:flex;justify-content:space-between;align-items:center;padding:14px;border-bottom:1px solid #ffffff11}
+.product-row:last-child{border:none}
+.product-row h3{font-size:15px;margin-bottom:4px}
+.product-row p{font-size:13px;color:#999}
+.product-row .price{color:#d4af37;font-weight:700}
+.actions{display:flex;gap:8px}
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh}
+.login-card{background:#141414;border:1px solid #d4af3733;border-radius:16px;padding:40px;max-width:380px;width:90%;text-align:center}
+.login-card h2{margin-bottom:8px}
+.login-card p{color:#999;font-size:14px;margin-bottom:20px}
+.hidden{display:none!important}
+.status{padding:10px;border-radius:8px;margin-bottom:16px;font-size:14px;display:none}
+.status.ok{display:block;background:#1a3a1a;color:#7fdb7f;border:1px solid #2d5a2d}
+.status.err{display:block;background:#3a1a1a;color:#ff8080;border:1px solid #5a2d2d}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.form-grid .full{grid-column:1/-1}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+.toggle-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.toggle-row input{width:20px;height:20px;accent-color:#d4af37}
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="login-card">
+    <h2>🔐 <span class="gold">Northfield</span> Admin</h2>
+    <p>Enter password to manage your store</p>
+    <div class="field"><input type="password" id="pw" placeholder="Password" style="text-align:center"></div>
+    <button class="btn" onclick="login()" style="width:100%">Login</button>
+    <p id="login-err" style="color:#ff8080;margin-top:10px;display:none">Wrong password!</p>
+  </div>
+</div>
+
+<div id="admin-screen" class="hidden">
+  <div class="wrap">
+    <header>
+      <h1>🎛️ <span>Northfield</span> Admin</h1>
+      <button class="btn btn-small" onclick="location.reload()">Logout</button>
+    </header>
+    <div id="status" class="status"></div>
+
+    <div class="card">
+      <h3 style="margin-bottom:16px"><span class="gold">➕</span> <span id="form-title">Add New Website</span></h3>
+      <input type="hidden" id="edit-id">
+      <div class="form-grid">
+        <div class="field"><label>Title *</label><input id="f-title" placeholder="Business Landing Page"></div>
+        <div class="field"><label>Category</label><input id="f-category" placeholder="Websites" value="Websites"></div>
+        <div class="field"><label>Price</label><input id="f-price" placeholder="Contact for price" value="Contact for price"></div>
+        <div class="field"><label>Demo URL</label><input id="f-demo" placeholder="https://..."></div>
+        <div class="field full"><label>Description</label><textarea id="f-desc" placeholder="Short description of the website..."></textarea></div>
+        <div class="field full"><label>Image URL (optional)</label><input id="f-img" placeholder="https://..."></div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn" id="save-btn" onclick="saveProduct()">💾 Save Product</button>
+        <button class="btn hidden" id="cancel-btn" onclick="resetForm()" style="background:#333;color:#fff">Cancel</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:16px"><span class="gold">📦</span> Products (<span id="count">0</span>)</h3>
+      <div id="product-list"><p style="color:#999">Loading...</p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+var SUPABASE_URL = 'https://jlpvmxirezcusajzntyx.supabase.co';
+var SUPABASE_KEY = 'sb_publishable_11BGivBGTP0ZLnLr8aQ0Fw_ce39yK9O';
+var PASSWORD = 'northfield123';
+var HEADERS = {'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json'};
+
+function login() {
+  if (document.getElementById('pw').value === PASSWORD) {
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('admin-screen').classList.remove('hidden');
+    loadProducts();
+  } else {
+    document.getElementById('login-err').style.display = 'block';
+  }
+}
+document.getElementById('pw').addEventListener('keypress', function(e){ if(e.key==='Enter') login(); });
+
+function showStatus(msg, ok) {
+  var s = document.getElementById('status');
+  s.textContent = msg; s.className = 'status ' + (ok ? 'ok' : 'err');
+  setTimeout(function(){ s.className = 'status'; }, 4000);
+}
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+
+function loadProducts() {
+  fetch(SUPABASE_URL + '/rest/v1/products?select=*&order=created_at', {headers: HEADERS})
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      var list = document.getElementById('product-list');
+      document.getElementById('count').textContent = data.length;
+      if (!data.length) { list.innerHTML = '<p style="color:#999">No products yet. Add one above!</p>'; return; }
+      list.innerHTML = data.map(function(p){
+        return '<div class="product-row"><div><h3>' + esc(p.title) + '</h3><p>' + esc(p.category||'') + ' · ' + esc(p.description||'').substring(0,60) + '</p><span class="price">' + esc(p.price||'') + '</span></div>'
+          + '<div class="actions"><button class="btn btn-small" onclick="editProduct(\'' + p.id + '\')">✏️ Edit</button>'
+          + '<button class="btn btn-small btn-danger" onclick="deleteProduct(\'' + p.id + '\',\'' + esc(p.title).replace(/'/g,"\\'") + '\')">🗑️</button></div></div>';
+      }).join('');
+      window._products = data;
+    })
+    .catch(function(){ showStatus('Failed to load products', false); });
+}
+
+function saveProduct() {
+  var id = document.getElementById('edit-id').value;
+  var data = {
+    title: document.getElementById('f-title').value.trim(),
+    category: document.getElementById('f-category').value.trim() || 'Websites',
+    price: document.getElementById('f-price').value.trim() || 'Contact for price',
+    demo_url: document.getElementById('f-demo').value.trim() || null,
+    description: document.getElementById('f-desc').value.trim() || null,
+    image_url: document.getElementById('f-img').value.trim() || null
+  };
+  if (!data.title) { showStatus('Title is required!', false); return; }
+  var method = id ? 'PATCH' : 'POST';
+  var url = SUPABASE_URL + '/rest/v1/products' + (id ? '?id=eq.' + id : '');
+  fetch(url, {method: method, headers: Object.assign({}, HEADERS, {'Prefer': 'return=minimal'}), body: JSON.stringify(data)})
+    .then(function(r){ if(!r.ok) throw 0; showStatus(id ? '✅ Product updated!' : '✅ Product added! It\'s live on the store!', true); resetForm(); loadProducts(); })
+    .catch(function(){ showStatus('Failed to save', false); });
+}
+
+function editProduct(id) {
+  var p = window._products.find(function(x){ return x.id === id; });
+  if (!p) return;
+  document.getElementById('edit-id').value = p.id;
+  document.getElementById('f-title').value = p.title || '';
+  document.getElementById('f-category').value = p.category || '';
+  document.getElementById('f-price').value = p.price || '';
+  document.getElementById('f-demo').value = p.demo_url || '';
+  document.getElementById('f-desc').value = p.description || '';
+  document.getElementById('f-img').value = p.image_url || '';
+  document.getElementById('form-title').textContent = 'Edit Website';
+  document.getElementById('save-btn').textContent = '💾 Update Product';
+  document.getElementById('cancel-btn').classList.remove('hidden');
+  window.scrollTo(0, 0);
+}
+
+function resetForm() {
+  document.getElementById('edit-id').value = '';
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-category').value = 'Websites';
+  document.getElementById('f-price').value = 'Contact for price';
+  document.getElementById('f-demo').value = '';
+  document.getElementById('f-desc').value = '';
+  document.getElementById('f-img').value = '';
+  document.getElementById('form-title').textContent = 'Add New Website';
+  document.getElementById('save-btn').textContent = '💾 Save Product';
+  document.getElementById('cancel-btn').classList.add('hidden');
+}
+
+function deleteProduct(id, title) {
+  if (!confirm('Delete "' + title + '"?')) return;
+  fetch(SUPABASE_URL + '/rest/v1/products?id=eq.' + id, {method: 'DELETE', headers: HEADERS})
+    .then(function(r){ if(!r.ok) throw 0; showStatus('🗑️ Deleted!', true); loadProducts(); })
+    .catch(function(){ showStatus('Failed to delete', false); });
+}
+</script>
+</body>
+</html>
