@@ -122,9 +122,12 @@
     .section-heading p { max-width: 470px; margin: 0 0 5px; color: var(--muted); }
     .catalog {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       border-top: 1px solid var(--line-soft);
       border-left: 1px solid var(--line-soft);
+    }
+    @media (min-width: 1100px) {
+      .catalog { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
     .product {
       display: flex;
@@ -262,7 +265,7 @@
       .hero-aside { max-width: 580px; }
       .section-heading { display: block; }
       .section-heading p { margin-top: 18px; }
-      .catalog { grid-template-columns: 1fr; }
+      .catalog { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .steps-grid, .custom, .feedback-inner { grid-template-columns: 1fr; gap: 42px; }
       .modal-copy { align-items: flex-start; flex-direction: column; }
     }
@@ -276,11 +279,19 @@
       .hero-aside { padding-left: 16px; }
       .section { padding: 68px 0; }
       .section-heading { margin-bottom: 27px; }
-      .product { padding: 12px; }
-      .visual { min-height: 195px; }
-      .product-meta { gap: 10px; padding-top: 19px; }
-      .product h3 { font-size: 1.78rem; }
-      .product-actions { grid-template-columns: 1fr; }
+      .product { padding: 7px; }
+      .visual { min-height: 0; aspect-ratio: 16 / 10; }
+      .browserbar { height: 15px; padding-inline: 6px; gap: 3px; }
+      .browserbar i { width: 3px; height: 3px; }
+      .browserbar span { height: 3px; margin-left: 3px; }
+      .mock { inset: 15px 0 0; }
+      .product-meta { display: block; padding: 11px 1px 9px; }
+      .product-index, .product-type { display: none; }
+      .product h3 { margin: 0; font-size: clamp(.98rem, 4.7vw, 1.28rem); line-height: 1.08; }
+      .price { margin-top: 6px !important; font-size: .68rem; text-align: left; white-space: nowrap; }
+      .product-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+      .product-actions .btn { min-height: 36px; padding: 7px 3px; gap: 2px; font-size: .64rem; }
+      .product-actions .arrow { display: none; }
       .steps .wrap { padding-block: 66px; }
       .step { grid-template-columns: 42px 1fr; }
       .form { padding: 21px 17px; box-shadow: none; }
@@ -497,10 +508,8 @@
       /* Supabase live products */
       var SUPABASE_URL = 'https://jlpvmxirezcusajzntyx.supabase.co';
       var SUPABASE_KEY = 'sb_publishable_11BGivBGTP0ZLnLr8aQ0Fw_ce39yK9O';
-      var VISUAL_STYLES = ['food', 'shop', 'architecture', 'beauty', 'saas', 'wedding'];
       function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
       function buildCard(p, i) {
-        var style = VISUAL_STYLES[i % VISUAL_STYLES.length];
         var title = esc(p.title || 'Website');
         var desc = esc(p.description || '');
         var price = esc(p.price || 'Contact for price');
@@ -512,23 +521,16 @@
           : '<button class="btn demo" type="button">Live Demo</button>';
         var wa = 'https://wa.me/923047938698?text=' + encodeURIComponent("Hi, I'm interested in the " + (p.title || 'website') + '.');
         return '<article class="product" data-title="' + title.replace(/"/g, '&quot;') + '" data-description="' + desc.replace(/"/g, '&quot;') + '">'
-          + '<div class="visual ' + style + '" aria-label="Preview of ' + title + '">'
-          + '<div class="browserbar"><i></i><i></i><i></i><span></span></div>'
-          + '<div class="mock"><div style="padding:24px;text-align:center;"><b style="font-size:20px;color:#d4af37;">' + title + '</b><p style="margin-top:8px;opacity:.7;">' + cat + '</p></div></div>'
-          + '</div>'
           + '<div class="product-meta"><div><p class="product-index">' + idx + ' · ' + cat + '</p><h3>' + title + '</h3><p class="product-type">' + desc + '</p></div><p class="price">' + price + '</p></div>'
           + '<div class="product-actions">' + demoBtn + '<a class="btn gold" href="' + wa + '" target="_blank" rel="noopener">Buy Now <span class="arrow">↗</span></a></div>'
           + '</article>';
       }
       function bindDemoButtons(scope) {
-        scope.querySelectorAll('.demo').forEach(function (button) {
-          if (button.tagName === 'A') return;
+        scope.querySelectorAll('button.demo').forEach(function (button) {
           button.addEventListener('click', function () {
             var product = button.closest('.product');
             var title = product.getAttribute('data-title');
-            var clonedVisual = product.querySelector('.visual').cloneNode(true);
             previousFocus = button;
-            modalVisual.replaceChildren(clonedVisual);
             modalTitle.textContent = title + ' · Live preview';
             modalDescription.textContent = product.getAttribute('data-description');
             modalBuy.href = 'https://wa.me/923047938698?text=' + encodeURIComponent("Hi, I'm interested in the " + title + ' website.');
@@ -545,8 +547,6 @@
           var catalog = document.querySelector('.catalog');
           catalog.innerHTML = products.map(buildCard).join('');
           bindDemoButtons(catalog);
-          var heading = document.querySelector('#collection .section-heading p');
-          if (heading) heading.textContent = products.length + ' premium websites, updated live. Every concept can be adapted with your brand, copy, colors and contact details.';
         }
       }).catch(function () { /* keep hardcoded fallback */ });
     }());
