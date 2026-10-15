@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#080807" />
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,600&amp;family=DM+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet" />
+  <title>Northfield Web Store</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0b0b09;
+      --bg-deep: #050505;
+      --surface: #12120f;
+      --surface-2: #181711;
+      --line: rgba(218, 178, 91, .25);
+      --line-soft: rgba(255, 255, 255, .10);
+      --gold: #d9b35f;
+      --gold-strong: #f0ce7a;
+      --gold-deep: #a87b29;
+      --text: #f6f0e4;
+      --muted: #b8b1a4;
+      --dark-text: #14120d;
+      --shadow: rgba(0, 0, 0, .55);
+      --serif: "Bodoni Moda", Georgia, serif;
+      --sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #10100d;
+        --bg-deep: #070706;
+        --surface: #171611;
+        --surface-2: #1c1a14;
+        --line: rgba(231, 194, 112, .32);
+        --line-soft: rgba(255, 255, 255, .12);
+        --gold: #e0bc6c;
+        --gold-strong: #f3d587;
+        --gold-deep: #b8862e;
+        --text: #fff9ed;
+        --muted: #c9c0b0;
+        --dark-text: #17130a;
+        --shadow: rgba(0, 0, 0, .42);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        radial-gradient(circle at 84% 3%, rgba(217, 179, 95, .10), transparent 26rem),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.55;
+    }
+    button, input, textarea, a { font: inherit; }
+    a { color: inherit; }
+    button { color: inherit; }
+    ::selection { background: var(--gold); color: var(--dark-text); }
+    .wrap { width: min(1160px, calc(100% - 40px)); margin-inline: auto; }
+    .topline {
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .utility {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .utility p { margin: 0; color: var(--muted); font-size: .86rem; }
+    .utility nav { display: flex; align-items: center; gap: 22px; }
+    .utility nav a { text-decoration: none; font-size: .86rem; color: var(--muted); transition: color .2s ease; }
+    .utility nav a:hover, .utility nav a:focus-visible { color: var(--gold-strong); }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr);
+      gap: 64px;
+      align-items: end;
+      min-height: 560px;
+      padding: 84px 0 72px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .eyebrow { margin: 0 0 22px; color: var(--gold-strong); font-size: .75rem; letter-spacing: .22em; text-transform: uppercase; }
+    h1, h2, h3 { font-family: var(--serif); font-weight: 500; line-height: .98; }
+    h1 { margin: 0; max-width: 850px; font-size: clamp(3.7rem, 8.2vw, 7.8rem); letter-spacing: -.05em; }
+    h1 em { color: var(--gold); font-style: italic; }
+    .hero-aside { padding: 0 0 14px 26px; border-left: 1px solid var(--line); }
+    .hero-aside p { margin: 0 0 26px; color: var(--muted); font-size: 1.04rem; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .btn {
+      display: inline-flex;
+      min-height: 47px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      background: transparent;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: .88rem;
+      cursor: pointer;
+      transition: background .2s ease, border-color .2s ease, color .2s ease;
+    }
+    .btn:hover, .btn:focus-visible { border-color: var(--gold); background: rgba(217, 179, 95, .08); }
+    .btn.gold { background: var(--gold); border-color: var(--gold); color: var(--dark-text); }
+    .btn.gold:hover, .btn.gold:focus-visible { background: var(--gold-strong); border-color: var(--gold-strong); }
+    .btn .arrow { font-size: 1.1em; }
+    .section { padding: 92px 0; }
+    .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 28px; margin-bottom: 42px; }
+    .section-heading h2 { margin: 0; font-size: clamp(2.7rem, 5vw, 4.8rem); letter-spacing: -.035em; }
+    .section-heading p { max-width: 470px; margin: 0 0 5px; color: var(--muted); }
+    .catalog {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-top: 1px solid var(--line-soft);
+      border-left: 1px solid var(--line-soft);
+    }
+    .product {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      padding: 20px;
+      border-right: 1px solid var(--line-soft);
+      border-bottom: 1px solid var(--line-soft);
+      background: rgba(255, 255, 255, .012);
+    }
+    .visual {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      min-height: 220px;
+      border-radius: 1px;
+      background: #ece8df;
+      color: #10100f;
+      isolation: isolate;
+    }
+    .visual::after { content: ""; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12); }
+    .browserbar { position: absolute; inset: 0 0 auto; z-index: 3; display: flex; align-items: center; gap: 5px; height: 24px; padding: 0 9px; background: rgba(12, 12, 12, .88); }
+    .browserbar i { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.42); }
+    .browserbar span { width: 38%; height: 5px; margin-left: 7px; border-radius: 9px; background: rgba(255,255,255,.12); }
+    .mock { position: absolute; inset: 24px 0 0; overflow: hidden; }
+    .mock small { font-family: var(--sans); }
+    .food .mock { display: grid; grid-template-columns: .95fr 1.05fr; background: #f2eadb; }
+    .food-copy { padding: 8% 7%; display: flex; flex-direction: column; justify-content: center; }
+    .food-copy b { color: #7f271f; font: 600 clamp(1.15rem, 2.4vw, 2rem)/1 var(--serif); }
+    .food-copy p { width: 74%; margin: 8px 0; font-size: clamp(.37rem, .8vw, .63rem); color: #665b4f; }
+    .mini-cta { width: max-content; padding: 5px 8px; background: #7f271f; color: white; font-size: clamp(.32rem, .7vw, .55rem); text-transform: uppercase; letter-spacing: .08em; }
+    .food-photo { position: relative; overflow: hidden; background: #2c160f; }
+    .food-photo::before { content: ""; position: absolute; width: 58%; aspect-ratio: 1; top: 21%; left: 21%; border-radius: 50%; background: radial-gradient(circle at 42% 39%, #f6ce77 0 9%, #a94321 10% 24%, #e49d45 25% 43%, #f1d9a0 44% 55%, #493024 56% 59%, #d9c8a1 60%); box-shadow: 0 17px 35px rgba(0,0,0,.52); }
+    .food-photo::after { content: ""; position: absolute; width: 65%; height: 2px; left: 18%; bottom: 12%; background: #d3ad6c; }
+    .shop .mock { background: #d9d3c7; padding: 5% 6%; }
+    .shop-head { display: flex; justify-content: space-between; font: 600 clamp(.45rem, .9vw, .7rem) var(--sans); letter-spacing: .15em; text-transform: uppercase; }
+    .shop-grid { display: grid; grid-template-columns: 1.3fr .75fr .75fr; gap: 4%; height: 77%; margin-top: 5%; }
+    .cloth { position: relative; overflow: hidden; background: #b0a99e; }
+    .cloth::before { content: ""; position: absolute; width: 46%; height: 74%; left: 27%; top: 14%; border-radius: 48% 48% 10% 10%; background: linear-gradient(135deg, #25221e, #6b5e4d); transform: rotate(-3deg); box-shadow: 0 11px 25px rgba(0,0,0,.24); }
+    .cloth:nth-child(2)::before { background: linear-gradient(135deg, #9b815c, #3b3126); }
+    .cloth:nth-child(3)::before { background: linear-gradient(135deg, #ece8de, #a19b92); }
+    .architecture .mock { display: grid; grid-template-columns: 38% 62%; background: #d2d4cf; }
+    .arch-copy { padding: 11% 9%; color: #282a27; }
+    .arch-copy strong { display: block; font: 500 clamp(.8rem, 1.8vw, 1.45rem)/1.05 var(--serif); }
+    .arch-copy span { display: block; margin-top: 9px; font-size: clamp(.35rem, .7vw, .55rem); color: #5d615d; }
+    .arch-img { position: relative; background: linear-gradient(135deg, #bfc6c0 0 39%, #e8e6df 39% 58%, #6a7771 58% 100%); }
+    .arch-img::before { content: ""; position: absolute; right: 9%; bottom: 0; width: 64%; height: 66%; background: linear-gradient(90deg, #d8d0c3 0 12%, #262e2d 12% 35%, #9e9586 35% 42%, #292e2d 42% 68%, #d8d0c3 68%); box-shadow: -20px -14px 0 rgba(242,238,230,.55); }
+    .beauty .mock { display: grid; grid-template-columns: 1.1fr .9fr; background: #f2e3de; }
+    .beauty-img { position: relative; background: linear-gradient(155deg, #c48b7d, #efc9bd); }
+    .beauty-img::before { content: ""; position: absolute; width: 25%; height: 55%; left: 38%; bottom: 11%; border-radius: 4px 4px 10px 10px; background: linear-gradient(90deg,#6e403b,#bd786d 50%,#72433e); box-shadow: 0 -12px 0 -6px #d6aa88, 14px 12px 28px rgba(77,30,25,.25); }
+    .beauty-copy { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 8%; text-align: center; }
+    .beauty-copy b { font: 500 clamp(1rem, 2vw, 1.7rem)/1 var(--serif); color: #613a35; }
+    .beauty-copy small { margin-top: 8px; color: #886b66; font-size: clamp(.36rem, .72vw, .58rem); }
+    .saas .mock { background: #081d2a; color: #e9fbff; padding: 6% 7%; }
+    .saas-top { display: flex; align-items: center; justify-content: space-between; font-size: clamp(.35rem, .7vw, .58rem); color: #9fbcc9; }
+    .saas-main { display: grid; grid-template-columns: 1fr 1.1fr; gap: 7%; align-items: center; height: 83%; }
+    .saas-main b { font: 600 clamp(1rem, 2.2vw, 1.8rem)/1.02 var(--serif); }
+    .saas-main p { margin: 7px 0; font-size: clamp(.34rem, .7vw, .56rem); color: #9fbcc9; }
+    .dash { display: grid; grid-template-columns: 1fr 2fr; grid-template-rows: 1fr 1fr; gap: 5px; height: 70%; padding: 7px; border: 1px solid rgba(126,213,235,.2); background: #0d2838; box-shadow: 0 20px 30px rgba(0,0,0,.28); transform: rotate(2deg); }
+    .dash i { display: block; border-radius: 2px; background: linear-gradient(140deg, #17485f, #0d3447); }
+    .dash i:nth-child(2) { grid-row: 1 / 3; grid-column: 2; background: linear-gradient(180deg,#153a4b,#153a4b 30%,#2a87a2 31% 34%,#153a4b 35% 45%,#42aec2 46% 50%,#153a4b 51%); }
+    .wedding .mock { display: grid; grid-template-columns: .9fr 1.1fr; background: #efede6; }
+    .wedding-copy { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 7%; color: #574c43; text-align: center; }
+    .wedding-copy b { font: italic 500 clamp(1rem, 2.3vw, 1.9rem)/1 var(--serif); }
+    .wedding-copy span { width: 60%; height: 1px; margin: 10px 0; background: #a3917e; }
+    .wedding-copy small { font-size: clamp(.34rem, .7vw, .56rem); }
+    .wedding-img { position: relative; overflow: hidden; background: linear-gradient(155deg, #7b6a5a, #d0c1ae); }
+    .wedding-img::before, .wedding-img::after { content: ""; position: absolute; bottom: -8%; border-radius: 50% 50% 12% 12%; background: linear-gradient(180deg,#d7c0aa 0 18%,#f1e4d3 19% 100%); }
+    .wedding-img::before { width: 28%; height: 73%; left: 23%; transform: rotate(-5deg); }
+    .wedding-img::after { width: 27%; height: 69%; right: 22%; background: linear-gradient(180deg,#a78168 0 18%,#26211e 19% 100%); transform: rotate(5deg); }
+    .product-meta { display: flex; justify-content: space-between; gap: 20px; padding: 24px 2px 18px; }
+    .product-meta p { margin: 0; }
+    .product-index { color: var(--gold); font-size: .75rem; letter-spacing: .14em; }
+    .product h3 { margin: 4px 0 7px; font-size: clamp(1.65rem, 3vw, 2.35rem); line-height: 1.05; }
+    .product-type { color: var(--muted); font-size: .85rem; }
+    .price { flex: 0 0 auto; color: var(--gold-strong); font-weight: 600; font-size: .86rem; text-align: right; }
+    .product-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: auto; }
+    .steps { border-block: 1px solid var(--line-soft); background: var(--surface); }
+    .steps .wrap { padding-block: 88px; }
+    .steps-grid { display: grid; grid-template-columns: 1.1fr 1.9fr; gap: 70px; }
+    .steps h2 { margin: 0; font-size: clamp(2.7rem, 5vw, 4.5rem); }
+    .steps-list { display: grid; }
+    .step { display: grid; grid-template-columns: 60px 1fr; gap: 18px; padding: 23px 0; border-bottom: 1px solid var(--line-soft); }
+    .step:first-child { padding-top: 0; }
+    .step b { color: var(--gold); font-family: var(--serif); font-size: 1.35rem; font-weight: 500; }
+    .step h3 { margin: 0 0 6px; font-size: 1.45rem; }
+    .step p { margin: 0; color: var(--muted); font-size: .92rem; }
+    .custom { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: start; }
+    .custom-copy h2 { margin: 0 0 22px; font-size: clamp(3rem, 5.6vw, 5.3rem); letter-spacing: -.04em; }
+    .custom-copy p { max-width: 500px; margin: 0 0 28px; color: var(--muted); }
+    .form { padding: 31px; border: 1px solid var(--line); background: var(--surface); box-shadow: 18px 18px 0 rgba(217,179,95,.035); }
+    .form h3 { margin: 0 0 23px; font-size: 2rem; }
+    .field { margin-bottom: 17px; }
+    label { display: block; margin-bottom: 7px; color: var(--muted); font-size: .76rem; letter-spacing: .08em; text-transform: uppercase; }
+    input, textarea {
+      width: 100%;
+      border: 1px solid var(--line-soft);
+      border-radius: 0;
+      outline: none;
+      background: var(--bg-deep);
+      color: var(--text);
+      padding: 13px 14px;
+      transition: border-color .2s ease;
+    }
+    input:focus, textarea:focus { border-color: var(--gold); }
+    textarea { min-height: 114px; resize: vertical; }
+    .form .btn { width: 100%; }
+    .form-note { min-height: 1.35em; margin: 10px 0 0; color: var(--muted); font-size: .78rem; }
+    .feedback-strip { border-top: 1px solid var(--line-soft); background: var(--surface-2); }
+    .feedback-inner { display: grid; grid-template-columns: .8fr 1.2fr; gap: 70px; padding-block: 64px; align-items: start; }
+    .feedback-inner h2 { margin: 0 0 13px; font-size: clamp(2.4rem, 4vw, 3.6rem); }
+    .feedback-inner > div > p { margin: 0; color: var(--muted); }
+    .feedback-fields { display: grid; grid-template-columns: 1fr 160px; gap: 13px; }
+    .feedback-fields .wide { grid-column: 1 / -1; }
+    footer { border-top: 1px solid var(--line-soft); padding: 35px 0 calc(35px + env(safe-area-inset-bottom)); }
+    .footer-row { display: flex; justify-content: space-between; gap: 24px; color: var(--muted); font-size: .82rem; }
+    .footer-row a { color: var(--gold-strong); text-decoration: none; }
+    .modal[hidden] { display: none; }
+    .modal { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 22px; background: rgba(0,0,0,.86); }
+    .modal-card { width: min(980px, 100%); max-height: calc(100vh - 44px); overflow: auto; border: 1px solid var(--line); background: var(--surface); box-shadow: 0 35px 100px rgba(0,0,0,.8); }
+    .modal-head { position: sticky; top: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 15px 18px; border-bottom: 1px solid var(--line-soft); background: var(--surface); }
+    .modal-head p { margin: 0; font-family: var(--serif); font-size: 1.25rem; }
+    .close { width: 38px; height: 38px; border: 1px solid var(--line-soft); border-radius: 50%; background: transparent; cursor: pointer; font-size: 1.35rem; }
+    .close:hover, .close:focus-visible { border-color: var(--gold); color: var(--gold); }
+    .modal-body { padding: 22px; }
+    .modal-visual .visual { width: 100%; min-height: 360px; }
+    .modal-copy { display: flex; justify-content: space-between; align-items: center; gap: 22px; padding-top: 21px; }
+    .modal-copy p { margin: 0; max-width: 580px; color: var(--muted); }
+    body.modal-open { overflow: hidden; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition-duration: .001ms !important; } }
+    @media (max-width: 840px) {
+      .utility nav a:nth-child(2) { display: none; }
+      .hero { grid-template-columns: 1fr; gap: 38px; min-height: auto; padding: 66px 0 58px; }
+      h1 { font-size: clamp(3.45rem, 15vw, 6.5rem); }
+      .hero-aside { max-width: 580px; }
+      .section-heading { display: block; }
+      .section-heading p { margin-top: 18px; }
+      .catalog { grid-template-columns: 1fr; }
+      .steps-grid, .custom, .feedback-inner { grid-template-columns: 1fr; gap: 42px; }
+      .modal-copy { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 560px) {
+      .wrap { width: min(100% - 26px, 1160px); }
+      .utility { padding: 16px 0; }
+      .utility p { display: none; }
+      .utility nav { width: 100%; justify-content: space-between; gap: 10px; }
+      .utility nav a:nth-child(2) { display: block; }
+      .hero { padding-top: 48px; }
+      .hero-aside { padding-left: 16px; }
+      .section { padding: 68px 0; }
+      .section-heading { margin-bottom: 27px; }
+      .product { padding: 12px; }
+      .visual { min-height: 195px; }
+      .product-meta { gap: 10px; padding-top: 19px; }
+      .product h3 { font-size: 1.78rem; }
+      .product-actions { grid-template-columns: 1fr; }
+      .steps .wrap { padding-block: 66px; }
+      .step { grid-template-columns: 42px 1fr; }
+      .form { padding: 21px 17px; box-shadow: none; }
+      .feedback-fields { grid-template-columns: 1fr; }
+      .feedback-fields .wide { grid-column: auto; }
+      .footer-row { flex-direction: column; }
+      .modal { padding: 10px; }
+      .modal-card { max-height: calc(100vh - 20px); }
+      .modal-body { padding: 12px; }
+      .modal-visual .visual { min-height: 210px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline" aria-hidden="true"></div>
+  <header class="wrap utility">
+    <p>Independent website design · Available worldwide</p>
+    <nav aria-label="Page navigation">
+      <a href="#collection">Collection</a>
+      <a href="#process">How it works</a>
+      <a href="#custom">Custom order</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="wrap hero">
+      <div>
+        <p class="eyebrow">Curated website collection</p>
+        <h1>Digital work with <em>presence.</em></h1>
+      </div>
+      <div class="hero-aside">
+        <p>Ready-made website concepts for brands that want a sharp first impression. Preview the design, choose your direction, then contact us to make it yours.</p>
+        <div class="hero-actions">
+          <a class="btn gold" href="#collection">Explore websites <span class="arrow">↓</span></a>
+          <a class="btn" href="#custom">Request custom work</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap section" id="collection">
+      <div class="section-heading">
+        <h2>Selected websites</h2>
+        <p>Six distinct directions, crafted for different businesses. Every concept can be adapted with your brand, copy, colors and contact details.</p>
+      </div>
+
+      <div class="catalog">
+        <article class="product" data-title="Maison Dining" data-description="An editorial restaurant experience with immersive food presentation, a focused menu story and reservation-ready structure.">
+          <div class="visual food" aria-label="Preview of an elegant restaurant website">
+            <div class="browserbar"><i></i><i></i><i></i><span></span></div>
+            <div class="mock"><div class="food-copy"><b>Dining, refined.</b><p>A seasonal table shaped by fire, craft and quiet detail.</p><small class="mini-cta">Explore the menu</small></div><div class="food-photo"></div></div>
+          </div>
+          <div class="product-meta"><div><p class="product-index">01 · HOSPITALITY</p><h3>Maison Dining</h3><p class="product-type">Restaurant &amp; fine dining website</p></div><p class="price">Contact for price</p></div>
+          <div class="product-actions"><button class="btn demo" type="button">Live Demo</button><a class="btn gold" href="https://wa.me/923047938698?text=Hi%2C%20I%27m%20interested%20in%20the%20Maison%20Dining%20website." target="_blank" rel="noopener">Buy Now <span class="arrow">↗</span></a></div>
+        </article>
+
+        <article class="product" data-title="Obsidian Commerce" data-description="A fashion-first storefront built around strong art direction, confident product presentation and a clean path to purchase.">
+          <div class="visual shop" aria-label="Preview of a premium fashion ecommerce website">
+            <div class="browserbar"><i></i><i></i><i></i><span></span></div>
+            <div class="mock"><div class="shop-head"><span>Obsidian</span><span>New · Shop · Journal</span></div><div class="shop-grid"><div class="cloth"></div><div class="cloth"></div><div class="cloth"></div></div></div>
+          </div>
+          <div class="product-meta"><div><p class="product-index">02 · ECOMMERCE</p><h3>Obsidian Commerce</h3><p class="product-type">Fashion &amp; product storefront</p></div><p class="price">Contact for price</p></div>
+          <div class="product-actions"><button class="btn demo" type="button">Live Demo</button><a class="btn gold" href="https://wa.me/923047938698?text=Hi%2C%20I%27m%20interested%20in%20the%20Obsidian%20Commerce%20website." target="_blank" rel="noopener">Buy Now <span class="arrow">↗</span></a></div>
+        </article>
+
+        <article class="product" data-title="Atelier Architecture" data-description="A quiet, image-led portfolio for architects and interior studios, balancing project detail with generous visual space.">
+          <div class="visual architecture" aria-label="Preview of a modern architecture studio website">
+            <div class="browserbar"><i></i><i></i><i></i><span></span></div>
+            <div class="mock"><div class="arch-copy"><strong>Space with intention.</strong><span>Architecture · Interiors · Objects</span></div><div class="arch-img"></div></div>
+          </div>
+          <div class="product-meta"><div><p class="product-index">03 · PORTFOLIO</p><h3>Atelier Architecture</h3><p class="product-type">Architecture &amp; interiors portfolio</p></div><p class="price">Contact for price</p></div>
+          <div class="product-actions"><button class="btn demo" type="button">Live Demo</button><a class="btn gold" href="https://wa.me/923047938698?text=Hi%2C%20I%27m%20interested%20in%20the%20Atelier%20Architecture%20website." target="_blank" rel="noopener">Buy Now <span class="arrow">↗</span></a></div>
+        </article>
+
+        <article class="product" data-title="Lumina Beauty" data-description="A soft but assured beauty presence designed for salons, skincare studios and independent product lines.">
+          <div class="visual beauty" aria-label="Preview of a beauty and skincare website">
+            <div class="browserbar"><i></i><i></i><i></i><span></span></div>
+            <div class="mock"><div class="beauty-img"></div><div class="beauty-copy"><b>Everyday radiance.</b><small>Considered care for modern skin.</small></div></div>
+          </div>
+          <div class="product-meta"><div><p class="product-index">04 · BEAUTY</p><h3>Lumina Beauty</h3><p class="product-type">Salon, spa &amp; skincare website</p></div><p class="price">Contact for price</p></div>
+          <div class="product-actions"><button class="btn demo" type="button">Live Demo</button><a class="btn gold" href="https://wa.me/923047938698?text=Hi%2C%20I%27m%20interested%20in%20the%20Lumina%20Beauty%20website." target="_blank" rel="noopener">Buy Now <span class="arrow">↗</span></a></div>
+        </article>
+
+        <article class="product" data-title="Summit SaaS" data-description="A crisp product website for software teams, with space for the value proposition, interface proof, features and conversion points.">
+          <div class="visual saas" aria-label="Preview of a software product website">
+            <div class="browserbar"><i></i><i></i><i></i><span></span></div>
+            <div class="mock"><div class="saas-top"><strong>SUMMIT</strong><span>Product&nbsp;&nbsp; Solutions&nbsp;&nbsp; Sign in</span></div><div class="saas-main"><div><b>See the work. Move faster.</b><p>One clear view for projects, progress and decisions.</p></div><div class="dash"><i></i><i></i><i></i></div></div></div>
+          </div>
+          <div class="product-meta"><div><p class="product-index">05 · TECHNOLOGY</p><h3>Summit SaaS</h3><p class="product-type">Software &amp; startup landing page</p></div><p class="price">Contact for price</p></div>
+          <div class="product-actions"><button class="btn demo" type="button">Live Demo</button><a class="btn gold" href="https://wa.me/923047938698?text=Hi%2C%20I%27m%20interested%20in%20the%20Summit%20SaaS%20website." target="_blank" rel="noopener">Buy Now <span class="arrow">↗</span></a></div>
+        </article>
+
+        <article class="product" data-title="Vow Wedding" data-description="A romantic, editorial invitation website for wedding details, schedules, stories and guest information.">
+          <div class="visual wedding" aria-label="Preview of an elegant wedding website">
+            <div class="browserbar"><i></i><i></i><i></i><span></span></div>
+            <div class="mock"><div class="wedding-copy"><b>Amelia &amp; James</b><span></span><small>September · The Garden Estate</small></div><div class="wedding-img"></div></div>
+          </div>
+          <div class="product-meta"><div><p class="product-index">06 · EVENTS</p><h3>Vow Wedding</h3><p class="product-type">Wedding &amp; event invitation website</p></div><p class="price">Contact for price</p></div>
+          <div class="product-actions"><button class="btn demo" type="button">Live Demo</button><a class="btn gold" href="https://wa.me/923047938698?text=Hi%2C%20I%27m%20interested%20in%20the%20Vow%20Wedding%20website." target="_blank" rel="noopener">Buy Now <span class="arrow">↗</span></a></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="steps" id="process">
+      <div class="wrap steps-grid">
+        <div><p class="eyebrow">A simple process</p><h2>How it works</h2></div>
+        <div class="steps-list">
+          <div class="step"><b>01</b><div><h3>Choose a direction</h3><p>Explore the collection and select the website concept closest to your business.</p></div></div>
+          <div class="step"><b>02</b><div><h3>Start the conversation</h3><p>Tap Buy Now to discuss your brand, pages, content, features and final price on WhatsApp.</p></div></div>
+          <div class="step"><b>03</b><div><h3>Make it yours</h3><p>The selected direction is adapted with your identity, information and customer journey before delivery.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap section custom" id="custom">
+      <div class="custom-copy">
+        <p class="eyebrow">Built around your idea</p>
+        <h2>Need something original?</h2>
+        <p>Share the business, style and features you have in mind. We can create a custom website direction beyond the ready-made collection.</p>
+        <a class="btn gold" href="https://wa.me/923047938698?text=Hi%2C%20I%27d%20like%20to%20discuss%20a%20custom%20website." target="_blank" rel="noopener">Discuss a custom website <span class="arrow">↗</span></a>
+      </div>
+      <form class="form" id="feedback-form">
+        <h3>Send your brief</h3>
+        <div class="field"><label for="name">Your name</label><input id="name" name="name" autocomplete="name" required /></div>
+        <div class="field"><label for="business">Business or website type</label><input id="business" name="business" required /></div>
+        <div class="field"><label for="message">What do you need?</label><textarea id="message" name="message" required></textarea></div>
+        <button class="btn gold" type="submit">Continue on WhatsApp <span class="arrow">↗</span></button>
+        <p class="form-note" id="form-note" aria-live="polite">Your message will open in WhatsApp for review before you send it.</p>
+      </form>
+    </section>
+
+    <section class="feedback-strip" id="feedback">
+      <div class="wrap feedback-inner">
+        <div><p class="eyebrow">Your opinion matters</p><h2>Share feedback</h2><p>Seen something you like—or something we can improve? Send a quick note directly on WhatsApp.</p></div>
+        <form id="feedback-only-form">
+          <div class="feedback-fields">
+            <div class="field"><label for="feedback-name">Your name</label><input id="feedback-name" name="feedback-name" autocomplete="name" required /></div>
+            <div class="field"><label for="rating">Rating</label><input id="rating" name="rating" inputmode="numeric" placeholder="1–5" required /></div>
+            <div class="field wide"><label for="feedback-message">Your feedback</label><textarea id="feedback-message" name="feedback-message" required></textarea></div>
+            <div class="wide"><button class="btn gold" type="submit">Send feedback on WhatsApp <span class="arrow">↗</span></button><p class="form-note" id="feedback-note" aria-live="polite">You can review the message in WhatsApp before sending.</p></div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-row"><span>© 2026 Northfield. Website design &amp; digital experiences.</span><a href="https://wa.me/923047938698" target="_blank" rel="noopener">WhatsApp: +92 304 793 8698</a></div>
+  </footer>
+
+  <div class="modal" id="demo-modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <div class="modal-head"><p id="modal-title">Website preview</p><button class="close" id="modal-close" type="button" aria-label="Close preview">×</button></div>
+      <div class="modal-body"><div class="modal-visual" id="modal-visual"></div><div class="modal-copy"><p id="modal-description"></p><a class="btn gold" id="modal-buy" href="https://wa.me/923047938698" target="_blank" rel="noopener">Ask about this website <span class="arrow">↗</span></a></div></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var modal = document.getElementById('demo-modal');
+      var modalVisual = document.getElementById('modal-visual');
+      var modalTitle = document.getElementById('modal-title');
+      var modalDescription = document.getElementById('modal-description');
+      var modalBuy = document.getElementById('modal-buy');
+      var closeButton = document.getElementById('modal-close');
+      var previousFocus = null;
+
+      document.querySelectorAll('.demo').forEach(function (button) {
+        button.addEventListener('click', function () {
+          var product = button.closest('.product');
+          var title = product.getAttribute('data-title');
+          var clonedVisual = product.querySelector('.visual').cloneNode(true);
+          previousFocus = button;
+          modalVisual.replaceChildren(clonedVisual);
+          modalTitle.textContent = title + ' · Live preview';
+          modalDescription.textContent = product.getAttribute('data-description');
+          modalBuy.href = 'https://wa.me/923047938698?text=' + encodeURIComponent("Hi, I'm interested in the " + title + ' website.');
+          modal.hidden = false;
+          document.body.classList.add('modal-open');
+          closeButton.focus();
+        });
+      });
+
+      function closeModal() {
+        modal.hidden = true;
+        document.body.classList.remove('modal-open');
+        modalVisual.replaceChildren();
+        if (previousFocus) previousFocus.focus();
+      }
+
+      closeButton.addEventListener('click', closeModal);
+      modal.addEventListener('click', function (event) { if (event.target === modal) closeModal(); });
+      document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && !modal.hidden) closeModal(); });
+
+      document.getElementById('feedback-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        var name = document.getElementById('name').value.trim();
+        var business = document.getElementById('business').value.trim();
+        var message = document.getElementById('message').value.trim();
+        var text = 'Hi, my name is ' + name + '.\n\nBusiness / website type: ' + business + '\n\nProject brief: ' + message;
+        document.getElementById('form-note').textContent = 'Opening your prepared message in WhatsApp…';
+        window.open('https://wa.me/923047938698?text=' + encodeURIComponent(text), '_blank', 'noopener');
+      });
+
+      document.getElementById('feedback-only-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        var feedbackName = document.getElementById('feedback-name').value.trim();
+        var rating = document.getElementById('rating').value.trim();
+        var feedbackMessage = document.getElementById('feedback-message').value.trim();
+        var feedbackText = 'Northfield Web Store feedback\n\nName: ' + feedbackName + '\nRating: ' + rating + '/5\n\nFeedback: ' + feedbackMessage;
+        document.getElementById('feedback-note').textContent = 'Opening your feedback in WhatsApp…';
+        window.open('https://wa.me/923047938698?text=' + encodeURIComponent(feedbackText), '_blank', 'noopener');
+      });
+    }());
+  </script>
+</body>
+</html>
