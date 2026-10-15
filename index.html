@@ -493,6 +493,62 @@
         document.getElementById('feedback-note').textContent = 'Opening your feedback in WhatsApp…';
         window.open('https://wa.me/923047938698?text=' + encodeURIComponent(feedbackText), '_blank', 'noopener');
       });
+
+      /* Supabase live products */
+      var SUPABASE_URL = 'https://jlpvmxirezcusajzntyx.supabase.co';
+      var SUPABASE_KEY = 'sb_publishable_11BGivBGTP0ZLnLr8aQ0Fw_ce39yK9O';
+      var VISUAL_STYLES = ['food', 'shop', 'architecture', 'beauty', 'saas', 'wedding'];
+      function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+      function buildCard(p, i) {
+        var style = VISUAL_STYLES[i % VISUAL_STYLES.length];
+        var title = esc(p.title || 'Website');
+        var desc = esc(p.description || '');
+        var price = esc(p.price || 'Contact for price');
+        var cat = esc((p.category || 'Websites').toUpperCase());
+        var idx = String(i + 1).padStart(2, '0');
+        var demoUrl = p.demo_url ? esc(p.demo_url) : '';
+        var demoBtn = demoUrl
+          ? '<a class="btn demo" href="' + demoUrl + '" target="_blank" rel="noopener">Live Demo</a>'
+          : '<button class="btn demo" type="button">Live Demo</button>';
+        var wa = 'https://wa.me/923047938698?text=' + encodeURIComponent("Hi, I'm interested in the " + (p.title || 'website') + '.');
+        return '<article class="product" data-title="' + title.replace(/"/g, '&quot;') + '" data-description="' + desc.replace(/"/g, '&quot;') + '">'
+          + '<div class="visual ' + style + '" aria-label="Preview of ' + title + '">'
+          + '<div class="browserbar"><i></i><i></i><i></i><span></span></div>'
+          + '<div class="mock"><div style="padding:24px;text-align:center;"><b style="font-size:20px;color:#d4af37;">' + title + '</b><p style="margin-top:8px;opacity:.7;">' + cat + '</p></div></div>'
+          + '</div>'
+          + '<div class="product-meta"><div><p class="product-index">' + idx + ' · ' + cat + '</p><h3>' + title + '</h3><p class="product-type">' + desc + '</p></div><p class="price">' + price + '</p></div>'
+          + '<div class="product-actions">' + demoBtn + '<a class="btn gold" href="' + wa + '" target="_blank" rel="noopener">Buy Now <span class="arrow">↗</span></a></div>'
+          + '</article>';
+      }
+      function bindDemoButtons(scope) {
+        scope.querySelectorAll('.demo').forEach(function (button) {
+          if (button.tagName === 'A') return;
+          button.addEventListener('click', function () {
+            var product = button.closest('.product');
+            var title = product.getAttribute('data-title');
+            var clonedVisual = product.querySelector('.visual').cloneNode(true);
+            previousFocus = button;
+            modalVisual.replaceChildren(clonedVisual);
+            modalTitle.textContent = title + ' · Live preview';
+            modalDescription.textContent = product.getAttribute('data-description');
+            modalBuy.href = 'https://wa.me/923047938698?text=' + encodeURIComponent("Hi, I'm interested in the " + title + ' website.');
+            modal.hidden = false;
+            document.body.classList.add('modal-open');
+            closeButton.focus();
+          });
+        });
+      }
+      fetch(SUPABASE_URL + '/rest/v1/products?select=*&order=created_at', {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+      }).then(function (r) { return r.ok ? r.json() : []; }).then(function (products) {
+        if (products && products.length) {
+          var catalog = document.querySelector('.catalog');
+          catalog.innerHTML = products.map(buildCard).join('');
+          bindDemoButtons(catalog);
+          var heading = document.querySelector('#collection .section-heading p');
+          if (heading) heading.textContent = products.length + ' premium websites, updated live. Every concept can be adapted with your brand, copy, colors and contact details.';
+        }
+      }).catch(function () { /* keep hardcoded fallback */ });
     }());
   </script>
 </body>
