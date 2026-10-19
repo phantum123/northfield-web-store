@@ -47,10 +47,11 @@ header h1 span{color:#d4af37}
 <div id="login-screen">
   <div class="login-card">
     <h2>🔐 <span class="gold">Northfield</span> Admin</h2>
-    <p>Enter password to manage your store</p>
-    <div class="field"><input type="password" id="pw" placeholder="Password" style="text-align:center"></div>
+    <p>Sign in with your admin account</p>
+    <div class="field"><input type="email" id="em" placeholder="Admin email" style="text-align:center" autocomplete="username"></div>
+    <div class="field"><input type="password" id="pw" placeholder="Password" style="text-align:center" autocomplete="current-password"></div>
     <button class="btn" onclick="login()" style="width:100%">Login</button>
-    <p id="login-err" style="color:#ff8080;margin-top:10px;display:none">Wrong password!</p>
+    <p id="login-err" style="color:#ff8080;margin-top:10px;display:none">Login failed — check email/password.</p>
   </div>
 </div>
 
@@ -58,7 +59,7 @@ header h1 span{color:#d4af37}
   <div class="wrap">
     <header>
       <h1>🎛️ <span>Northfield</span> Admin</h1>
-      <button class="btn btn-small" onclick="location.reload()">Logout</button>
+      <button class="btn btn-small" onclick="logout()">Logout</button>
     </header>
     <div id="status" class="status"></div>
 
@@ -89,19 +90,35 @@ header h1 span{color:#d4af37}
 <script>
 var SUPABASE_URL = 'https://jlpvmxirezcusajzntyx.supabase.co';
 var SUPABASE_KEY = 'sb_publishable_11BGivBGTP0ZLnLr8aQ0Fw_ce39yK9O';
-var PASSWORD = 'northfield123';
-var HEADERS = {'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json'};
+function authHeaders() {
+  var tok = sessionStorage.getItem('nf_admin_tok') || SUPABASE_KEY;
+  return {'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + tok, 'Content-Type': 'application/json'};
+}
+
+function showAdmin() {
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('admin-screen').classList.remove('hidden');
+  loadProducts();
+}
+function logout() { sessionStorage.removeItem('nf_admin_tok'); location.reload(); }
 
 function login() {
-  if (document.getElementById('pw').value === PASSWORD) {
-    document.getElementById('login-screen').classList.add('hidden');
-    document.getElementById('admin-screen').classList.remove('hidden');
-    loadProducts();
-  } else {
-    document.getElementById('login-err').style.display = 'block';
-  }
+  var email = document.getElementById('em').value.trim();
+  var password = document.getElementById('pw').value;
+  var err = document.getElementById('login-err');
+  err.style.display = 'none';
+  if (!email || !password) { err.style.display = 'block'; return; }
+  fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
+    method: 'POST',
+    headers: {'apikey': SUPABASE_KEY, 'Content-Type': 'application/json'},
+    body: JSON.stringify({email: email, password: password})
+  })
+  .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+  .then(function(d){ sessionStorage.setItem('nf_admin_tok', d.access_token); showAdmin(); })
+  .catch(function(){ err.style.display = 'block'; });
 }
 document.getElementById('pw').addEventListener('keypress', function(e){ if(e.key==='Enter') login(); });
+if (sessionStorage.getItem('nf_admin_tok')) { showAdmin(); }
 
 function showStatus(msg, ok) {
   var s = document.getElementById('status');
@@ -111,7 +128,7 @@ function showStatus(msg, ok) {
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
 
 function loadProducts() {
-  fetch(SUPABASE_URL + '/rest/v1/products?select=*&order=created_at', {headers: HEADERS})
+  fetch(SUPABASE_URL + '/rest/v1/products?select=*&order=created_at', {headers: authHeaders()})
     .then(function(r){ return r.json(); })
     .then(function(data){
       var list = document.getElementById('product-list');
@@ -140,7 +157,7 @@ function saveProduct() {
   if (!data.title) { showStatus('Title is required!', false); return; }
   var method = id ? 'PATCH' : 'POST';
   var url = SUPABASE_URL + '/rest/v1/products' + (id ? '?id=eq.' + id : '');
-  fetch(url, {method: method, headers: Object.assign({}, HEADERS, {'Prefer': 'return=minimal'}), body: JSON.stringify(data)})
+  fetch(url, {method: method, headers: Object.assign({}, authHeaders(), {'Prefer': 'return=minimal'}), body: JSON.stringify(data)})
     .then(function(r){ if(!r.ok) throw 0; showStatus(id ? '✅ Product updated!' : '✅ Product added! It\'s live on the store!', true); resetForm(); loadProducts(); })
     .catch(function(){ showStatus('Failed to save', false); });
 }
@@ -176,7 +193,7 @@ function resetForm() {
 
 function deleteProduct(id, title) {
   if (!confirm('Delete "' + title + '"?')) return;
-  fetch(SUPABASE_URL + '/rest/v1/products?id=eq.' + id, {method: 'DELETE', headers: HEADERS})
+  fetch(SUPABASE_URL + '/rest/v1/products?id=eq.' + id, {method: 'DELETE', headers: authHeaders()})
     .then(function(r){ if(!r.ok) throw 0; showStatus('🗑️ Deleted!', true); loadProducts(); })
     .catch(function(){ showStatus('Failed to delete', false); });
 }
