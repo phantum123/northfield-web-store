@@ -19,9 +19,9 @@
       --surface-2: #181711;
       --line: rgba(218, 178, 91, .25);
       --line-soft: rgba(255, 255, 255, .10);
-      --gold: #d9b35f;
-      --gold-strong: #f0ce7a;
-      --gold-deep: #a87b29;
+      --gold: #e2b45a;
+      --gold-strong: #f5d67e;
+      --gold-deep: #b0812f;
       --text: #f6f0e4;
       --muted: #b8b1a4;
       --dark-text: #14120d;
@@ -84,8 +84,10 @@
       padding-top: 11px;
       padding-bottom: 11px;
     }
-    .brand { text-decoration: none; font-family: var(--serif); font-size: 1.12rem; letter-spacing: .14em; color: var(--text); white-space: nowrap; }
+    .brand { display: inline-flex; align-items: center; text-decoration: none; font-family: var(--serif); font-size: 1.12rem; letter-spacing: .14em; color: var(--text); white-space: nowrap; }
     .brand span { color: var(--gold); }
+    .logo-mark { display: inline-flex; width: 32px; height: 32px; margin-right: 10px; align-items: center; justify-content: center; border: 1px solid var(--gold); transform: rotate(45deg); flex: 0 0 auto; }
+    .logo-mark i { transform: rotate(-45deg); font-style: normal; font-family: var(--serif); font-size: 1rem; color: var(--gold); }
     .navbar nav { display: flex; align-items: center; gap: 26px; }
     .navbar nav a { text-decoration: none; font-size: .88rem; font-weight: 500; color: var(--muted); transition: color .2s ease; }
     .navbar nav a:hover, .navbar nav a:focus-visible { color: var(--gold-strong); }
@@ -94,10 +96,10 @@
       position: relative;
       display: grid;
       grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr);
-      gap: 52px;
-      align-items: end;
-      min-height: 410px;
-      padding: 52px 0 48px;
+      gap: 36px;
+      align-items: center;
+      min-height: 0;
+      padding: 34px 0 30px;
       border-bottom: 1px solid var(--line-soft);
       isolation: isolate;
       overflow: hidden;
@@ -105,6 +107,9 @@
     .hero-copy, .hero-aside { transform: translate3d(0, var(--hero-shift, 0), 0); will-change: transform; }
     .hero-aside { --hero-factor: .45; }
     .hero-vfx { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+    .hero-vfx::before { content: ""; position: absolute; top: 20%; left: 31%; width: 1px; height: 44%; background: linear-gradient(transparent, rgba(240,206,122,.55), transparent); transform: rotate(18deg); filter: drop-shadow(0 0 8px rgba(217,179,95,.35)); }
+    .hero-glow { position: absolute; width: 420px; height: 420px; right: -120px; top: -140px; border-radius: 50%; background: radial-gradient(circle, rgba(226,180,90,.16), transparent 65%); animation: glowPulse 6s ease-in-out infinite; }
+    @keyframes glowPulse { 0%, 100% { transform: scale(1); opacity: .7; } 50% { transform: scale(1.18); opacity: 1; } }
     .hero-vfx::before { content: ""; position: absolute; top: 20%; left: 31%; width: 1px; height: 44%; background: linear-gradient(transparent, rgba(240,206,122,.55), transparent); transform: rotate(18deg); filter: drop-shadow(0 0 8px rgba(217,179,95,.35)); }
     .particle { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: var(--gold-strong); box-shadow: 0 0 9px rgba(240,206,122,.85); opacity: .46; animation: drift 7s ease-in-out infinite; }
     .particle:nth-child(1) { left: 7%; top: 24%; animation-delay: -2s; }
@@ -131,7 +136,7 @@
     }
     @keyframes brandShine { 0%, 18% { background-position: 120% 0; } 55%, 100% { background-position: -120% 0; } }
     h1, h2, h3 { font-family: var(--serif); font-weight: 500; line-height: .98; }
-    h1 { margin: 0; max-width: 850px; font-size: clamp(3.35rem, 7vw, 6.6rem); letter-spacing: -.05em; }
+    h1 { margin: 0; max-width: 850px; font-size: clamp(2.5rem, 5.5vw, 4.6rem); letter-spacing: -.04em; }
     h1 .word { display: inline-block; opacity: 0; transform: translateY(.42em); animation: wordIn .7s cubic-bezier(.2,.7,.2,1) forwards; }
     h1 .word:nth-child(2) { animation-delay: .12s; }
     h1 .word:nth-child(3) { animation-delay: .24s; }
@@ -349,8 +354,8 @@
     }
     @media (max-width: 840px) {
       .navbar nav { display: none; }
-      .hero { grid-template-columns: 1fr; gap: 28px; min-height: auto; padding: 44px 0 40px; }
-      h1 { font-size: clamp(3.25rem, 14vw, 5.8rem); }
+      .hero { grid-template-columns: 1fr; gap: 22px; min-height: auto; padding: 26px 0 24px; }
+      h1 { font-size: clamp(2.3rem, 9vw, 3.6rem); }
       .hero-aside { max-width: 580px; }
       .section-heading { display: block; }
       .section-heading p { margin-top: 18px; }
@@ -364,7 +369,7 @@
       .brand { font-size: .98rem; }
       .nav-cta { min-height: 36px; padding: 6px 12px; font-size: .72rem; }
       .nav-cta .arrow { display: none; }
-      .hero { padding-top: 30px; }
+      .hero { padding-top: 20px; }
       .hero-aside { padding-left: 16px; }
       .section { padding: 44px 0; }
       .section-heading { margin-bottom: 22px; }
@@ -398,7 +403,7 @@
   <div class="topline" id="top" aria-hidden="true"></div>
   <header class="navbar">
     <div class="wrap nav-inner">
-      <a class="brand" href="#top">NORTHFIELD <span>STORE</span></a>
+      <a class="brand" href="#top"><span class="logo-mark"><i>N</i></span>NORTHFIELD <span>&nbsp;STORE</span></a>
       <nav aria-label="Page navigation">
         <a href="#collection">Collection</a>
         <a href="#process">How it works</a>
@@ -410,13 +415,13 @@
 
   <main>
     <section class="wrap hero">
-      <div class="hero-vfx" aria-hidden="true"><i class="particle"></i><i class="particle"></i><i class="particle"></i><i class="particle"></i></div>
+      <div class="hero-vfx" aria-hidden="true"><span class="hero-glow"></span><i class="particle"></i><i class="particle"></i><i class="particle"></i><i class="particle"></i></div>
       <div class="hero-copy">
-        <p class="eyebrow"><span class="brand-shimmer">Northfield</span> · Curated website collection</p>
-        <h1 aria-label="Digital work with presence."><span class="word">Digital</span> <span class="word">work</span> <span class="word">with</span> <span class="word"><em>presence.</em></span></h1>
+        <p class="eyebrow"><span class="brand-shimmer">Northfield</span> · Premium website collection</p>
+        <h1 aria-label="Websites that demand attention."><span class="word">Websites</span> <span class="word">that</span> <span class="word"><em>demand</em></span> <span class="word"><em>attention.</em></span></h1>
       </div>
       <div class="hero-aside">
-        <p>Ready-made website concepts for brands that want a sharp first impression. Preview the design, choose your direction, then contact us to make it yours.</p>
+        <p>Hand-crafted website concepts with live demos. Preview your favorite, make it yours — delivered ready to launch.</p>
         <div class="hero-actions">
           <a class="btn gold" href="#collection">Explore websites <span class="arrow">↓</span></a>
           <a class="btn" href="#custom">Request custom work</a>
