@@ -251,8 +251,33 @@
     .wedding-img::before, .wedding-img::after { content: ""; position: absolute; bottom: -8%; border-radius: 50% 50% 12% 12%; background: linear-gradient(180deg,#d7c0aa 0 18%,#f1e4d3 19% 100%); }
     .wedding-img::before { width: 28%; height: 73%; left: 23%; transform: rotate(-5deg); }
     .wedding-img::after { width: 27%; height: 69%; right: 22%; background: linear-gradient(180deg,#a78168 0 18%,#26211e 19% 100%); transform: rotate(5deg); }
-    .product-meta { display: flex; justify-content: space-between; gap: 16px; padding: 18px 2px 14px; }
-    .product-meta p { margin: 0; }
+    /* Premium CSS mockups for products without live screenshots */
+    .mock-biz { background: linear-gradient(135deg, #f6f4ef, #e9e4d8); padding: 7% 8%; }
+    .mock-biz .mb-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9%; }
+    .mock-biz .mb-nav i { display: block; width: 26%; height: 7px; border-radius: 4px; background: #20304f; }
+    .mock-biz .mb-nav b { display: block; width: 16%; height: 14px; border-radius: 2px; background: #d9b35f; }
+    .mock-biz .mb-line { height: 9px; border-radius: 3px; background: #20304f; margin-bottom: 4%; }
+    .mock-biz .mb-line.w1 { width: 88%; height: 15px; }
+    .mock-biz .mb-line.w2 { width: 66%; }
+    .mock-biz .mb-line.w3 { width: 72%; background: #8a8578; height: 6px; margin-top: 7%; }
+    .mock-biz .mb-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6%; margin-top: 9%; }
+    .mock-biz .mb-cards i { display: block; height: 30px; border-radius: 3px; background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,.08); border-top: 3px solid #d9b35f; }
+    .mock-game { background: radial-gradient(circle at 70% 20%, #2b1b4d, #0c0718 70%); padding: 7% 8%; position: relative; overflow: hidden; }
+    .mock-game::before { content: ""; position: absolute; width: 70%; height: 60%; left: 15%; top: 30%; background: linear-gradient(135deg, #7c3aed, #06b6d4); filter: blur(30px); opacity: .35; }
+    .mock-game .mg-tag { position: relative; display: inline-block; font-family: var(--sans); font-size: clamp(.4rem,.8vw,.6rem); letter-spacing: .25em; color: #c4b5fd; border: 1px solid rgba(196,181,253,.4); padding: 3px 8px; border-radius: 20px; }
+    .mock-game .mg-title { position: relative; margin-top: 8%; font: 600 clamp(1.1rem,2.4vw,1.9rem)/1 var(--serif); color: #fff; text-shadow: 0 0 18px rgba(124,58,237,.8); }
+    .mock-game .mg-bar { position: relative; margin-top: 6%; height: 8px; border-radius: 4px; background: rgba(255,255,255,.12); overflow: hidden; }
+    .mock-game .mg-bar i { display: block; width: 72%; height: 100%; background: linear-gradient(90deg, #7c3aed, #06b6d4); border-radius: 4px; }
+    .mock-custom { background: #101010; padding: 0; display: grid; grid-template-columns: 1fr 1fr; }
+    .mock-custom .mc-left { background: #d9b35f; padding: 12% 10%; display: flex; flex-direction: column; justify-content: center; }
+    .mock-custom .mc-left b { font: 600 clamp(1rem,2.2vw,1.7rem)/1.05 var(--serif); color: #14120d; }
+    .mock-custom .mc-left span { display: block; margin-top: 10px; width: 45%; height: 8px; background: #14120d; }
+    .mock-custom .mc-right { background: linear-gradient(160deg, #1e1c17, #0c0b09); padding: 12% 10%; }
+    .mock-custom .mc-right i { display: block; height: 8px; border-radius: 2px; background: rgba(217,179,95,.25); margin-bottom: 14%; }
+    .mock-custom .mc-right i:nth-child(1) { width: 70%; background: rgba(217,179,95,.7); }
+    .mock-custom .mc-right i:nth-child(2) { width: 92%; }
+    .mock-custom .mc-right i:nth-child(3) { width: 55%; margin-bottom: 0; }
+    .product-meta { display: flex; justify-content: space-between; gap: 16px; padding: 18px 2px 14px; }    .product-meta p { margin: 0; }
     .product-index { color: var(--gold); font-size: .75rem; letter-spacing: .14em; }
     .product h3 { margin: 4px 0 7px; font-size: clamp(1.65rem, 3vw, 2.35rem); line-height: 1.05; }
     .product-type { color: var(--muted); font-size: .85rem; }
@@ -611,6 +636,20 @@
       var SUPABASE_URL = 'https://jlpvmxirezcusajzntyx.supabase.co';
       var SUPABASE_KEY = 'sb_publishable_11BGivBGTP0ZLnLr8aQ0Fw_ce39yK9O';
       function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+      function mockFallback(p) {
+        var t = String(p.title || 'Website').toLowerCase();
+        var cls = 'mock-custom', inner = '';
+        if (t.indexOf('gaming') > -1) {
+          cls = 'mock-game';
+          inner = '<span class="mg-tag">NEW DROP</span><div class="mg-title">Play Beyond</div><div class="mg-bar"><i></i></div>';
+        } else if (t.indexOf('business') > -1 || t.indexOf('landing') > -1) {
+          cls = 'mock-biz';
+          inner = '<div class="mb-nav"><i></i><b></b></div><div class="mb-line w1"></div><div class="mb-line w2"></div><div class="mb-line w3"></div><div class="mb-cards"><i></i><i></i><i></i></div>';
+        } else {
+          inner = '<div class="mc-left"><b>Make it yours.</b><span></span></div><div class="mc-right"><i></i><i></i><i></i></div>';
+        }
+        return '<div class="visual" aria-label="Preview"><div class="browserbar"><i></i><i></i><i></i><span></span></div><div class="mock ' + cls + '">' + inner + '</div></div>';
+      }
       function previewVisual(p) {
         if (p.image_url) {
           return '<div class="visual" aria-label="Preview"><div class="browserbar"><i></i><i></i><i></i><span></span></div><div class="mock"><img src="' + esc(p.image_url) + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.closest(\'.visual\').innerHTML=\'<div class=&quot;mock&quot;><div style=&quot;padding:24px;text-align:center;&quot;><b style=&quot;font-size:20px;color:#d4af37;&quot;>' + esc(p.title||'Website').replace(/"/g,'&quot;') + '</b></div></div>\'"></div></div>';
@@ -619,8 +658,7 @@
           var shot = 'https://s0.wp.com/mshots/v1/' + encodeURIComponent(p.demo_url) + '?w=600';
           return '<div class="visual" aria-label="Preview"><div class="browserbar"><i></i><i></i><i></i><span></span></div><div class="mock"><img src="' + shot + '" alt="Website preview" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top;" onerror="this.style.display=\'none\'"></div></div>';
         }
-        var t = esc(p.title || 'Website');
-        return '<div class="visual" aria-label="Preview"><div class="browserbar"><i></i><i></i><i></i><span></span></div><div class="mock"><div style="padding:24px;text-align:center;"><b style="font-size:20px;color:#d4af37;">' + t + '</b><p style="margin-top:8px;opacity:.7;">' + esc((p.category||'Websites').toUpperCase()) + '</p></div></div></div>';
+        return mockFallback(p);
       }
       function buildCard(p, i) {
         var title = esc(p.title || 'Website');
