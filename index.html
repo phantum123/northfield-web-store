@@ -786,7 +786,8 @@
           : '<button class="btn demo" type="button">Live Demo</button>';
         var wa = 'https://wa.me/923047938698?text=' + encodeURIComponent("Hi, I'm interested in the " + (p.title || 'website') + '.');
         var views = (typeof p.views === 'number') ? p.views : 0;
-        var stats = '<div class="card-stats"><span class="views">👁 <b class="vcount">' + views + '</b> views</span><span class="stars" data-stars></span><button class="rev-link" type="button" data-reviews>Reviews</button></div>';
+        var vShow = views >= 50 ? '' : ' style="display:none"';
+        var stats = '<div class="card-stats"><span class="views"' + vShow + '>👁 <b class="vcount">' + views + '</b> views</span><span class="stars" data-stars></span><button class="rev-link" type="button" data-reviews>Reviews</button></div>';
         return '<article class="product" data-id="' + esc(p.id || '') + '" data-category="' + esc(p.category || 'Websites') + '" data-title="' + title.replace(/"/g, '&quot;') + '" data-description="' + desc.replace(/"/g, '&quot;') + '">'
           + previewVisual(p)
           + '<div class="product-meta"><div><p class="product-index">' + idx + ' · ' + cat + '</p><h3>' + title + '</h3><p class="product-type">' + desc + '</p>' + stats + '</div><p class="price">' + price + '</p></div>'
@@ -877,7 +878,11 @@
             var card = link.closest('.product');
             var pid = card && card.getAttribute('data-id');
             var vc = card && card.querySelector('.vcount');
-            if (vc) vc.textContent = (parseInt(vc.textContent, 10) || 0) + 1;
+            if (vc) {
+              var nv = (parseInt(vc.textContent, 10) || 0) + 1;
+              vc.textContent = nv;
+              if (nv >= 50) vc.closest('.views').style.display = '';
+            }
             if (pid) fetch(SUPA + '/rest/v1/rpc/increment_views', { method: 'POST', headers: shead(), body: JSON.stringify({ pid: pid }) }).catch(function () {});
           });
         });
