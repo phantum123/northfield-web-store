@@ -86,8 +86,55 @@
     }
     .brand { display: inline-flex; align-items: center; text-decoration: none; font-family: var(--serif); font-size: 1.12rem; letter-spacing: .14em; color: var(--text); white-space: nowrap; }
     .brand span { color: var(--gold); }
-    .logo-mark { display: inline-flex; width: 32px; height: 32px; margin-right: 10px; align-items: center; justify-content: center; border: 1px solid var(--gold); transform: rotate(45deg); flex: 0 0 auto; }
-    .logo-mark i { transform: rotate(-45deg); font-style: normal; font-family: var(--serif); font-size: 1rem; color: var(--gold); }
+    .logo-mark { display: inline-flex; width: 32px; height: 32px; margin-right: 10px; align-items: center; justify-content: center; border: 1px solid var(--gold); transform: rotate(45deg); flex: 0 0 auto; overflow: hidden; position: relative; }
+    .logo-mark i { transform: rotate(-45deg); font-style: normal; font-family: var(--serif); font-size: 1rem; color: var(--gold); animation: nFlip 5s ease-in-out infinite; display: inline-block; }
+    .logo-mark::after { content: ""; position: absolute; inset: -40%; background: linear-gradient(115deg, transparent 42%, rgba(245,214,126,.85) 50%, transparent 58%); transform: translateX(-110%); animation: nShine 3.4s ease-in-out infinite; pointer-events: none; }
+    @keyframes nShine { 0% { transform: translateX(-110%); } 55%, 100% { transform: translateX(110%); } }
+    @keyframes nFlip { 0%, 78% { transform: rotate(-45deg); } 88%, 100% { transform: rotate(135deg); } }
+    /* Big hero logo mark */
+    .hero-logo-wrap { display: flex; justify-content: center; margin-bottom: 26px; }
+    .hero-logo { width: 118px; height: 118px; border: 2px solid var(--gold); transform: rotate(45deg); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; box-shadow: 0 0 46px rgba(226,180,90,.28); background: rgba(226,180,90,.05); }
+    .hero-logo b { transform: rotate(-45deg); font-family: var(--serif); font-size: 3.2rem; font-weight: 400; color: var(--gold-strong); animation: nFlip 5s ease-in-out infinite; display: inline-block; }
+    .hero-logo::after { content: ""; position: absolute; inset: -40%; background: linear-gradient(115deg, transparent 40%, rgba(255,240,200,.9) 50%, transparent 60%); transform: translateX(-110%); animation: nShine 3.4s ease-in-out infinite; }
+    /* Hamburger + drawer */
+    .hamburger { display: inline-flex; flex-direction: column; justify-content: center; gap: 5px; width: 42px; height: 42px; padding: 10px; background: transparent; border: 1px solid var(--line-soft); border-radius: 10px; cursor: pointer; margin-right: 12px; }
+    .hamburger span { display: block; height: 2px; background: var(--gold); border-radius: 2px; transition: transform .3s ease, opacity .3s ease; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); opacity: 0; pointer-events: none; transition: opacity .3s ease; z-index: 98; }
+    .drawer-overlay.show { opacity: 1; pointer-events: auto; }
+    .drawer { position: fixed; top: 0; left: 0; bottom: 0; width: min(320px, 84vw); background: #0c0c0f; border-right: 1px solid var(--line-soft); z-index: 99; transform: translateX(-105%); transition: transform .32s cubic-bezier(.2,.7,.2,1); padding: 22px 20px 30px; overflow-y: auto; }
+    .drawer.open { transform: translateX(0); }
+    .drawer h4 { font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 20px 0 10px; }
+    .drawer h4:first-child { margin-top: 6px; }
+    .drawer a { display: block; color: var(--ink); text-decoration: none; font-size: .95rem; padding: 10px 8px; border-radius: 8px; }
+    .drawer a:hover, .drawer a.active { background: rgba(226,180,90,.09); color: var(--gold-strong); }
+    .drawer .drawer-cat { display: flex; justify-content: space-between; align-items: center; }
+    .drawer .drawer-cat small { color: var(--muted); font-size: .75rem; }
+    .drawer .wa-num { margin-top: 22px; padding: 12px; border: 1px solid var(--gold); border-radius: 10px; text-align: center; }
+    /* Category chips */
+    .cat-chips { display: flex; flex-wrap: wrap; gap: 9px; margin: 4px 0 26px; }
+    .cat-chip { border: 1px solid var(--line-soft); background: transparent; color: var(--muted); font-size: .8rem; padding: 8px 15px; border-radius: 999px; cursor: pointer; transition: all .2s ease; }
+    .cat-chip:hover { border-color: var(--gold); color: var(--gold-strong); }
+    .cat-chip.active { background: var(--gold); border-color: var(--gold); color: #111; font-weight: 600; }
+    /* Card stats row */
+    .card-stats { display: flex; align-items: center; gap: 14px; margin: 10px 0 0; font-size: .78rem; color: var(--muted); }
+    .card-stats .views { display: inline-flex; align-items: center; gap: 5px; }
+    .card-stats .stars { color: var(--gold-strong); letter-spacing: 1px; }
+    .card-stats .rev-link { background: none; border: none; color: var(--gold-strong); font-size: .78rem; cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+    /* Reviews modal + wall */
+    .rev-list { display: grid; gap: 12px; margin: 0 0 18px; max-height: 300px; overflow-y: auto; }
+    .rev-item { border: 1px solid var(--line-soft); border-radius: 10px; padding: 12px 14px; }
+    .rev-item .rev-head { display: flex; justify-content: space-between; align-items: center; font-size: .82rem; margin-bottom: 6px; }
+    .rev-item .rev-head b { color: var(--gold-strong); font-weight: 600; }
+    .rev-item .rev-head span { color: var(--gold); letter-spacing: 1px; }
+    .rev-item p { margin: 0; font-size: .88rem; color: var(--ink); }
+    .rev-item small { color: var(--muted); font-size: .72rem; }
+    .rev-form .field { margin-bottom: 12px; }
+    .rev-form select { width: 100%; background: #121216; color: var(--ink); border: 1px solid var(--line-soft); border-radius: 8px; padding: 10px; font-size: .9rem; }
+    .wall { display: grid; gap: 12px; margin-top: 26px; }
+    .wall .rev-item { background: rgba(226,180,90,.04); }
     .navbar nav { display: flex; align-items: center; gap: 26px; }
     .navbar nav a { text-decoration: none; font-size: .88rem; font-weight: 500; color: var(--muted); transition: color .2s ease; }
     .navbar nav a:hover, .navbar nav a:focus-visible { color: var(--gold-strong); }
@@ -420,37 +467,47 @@
   <div class="topline" id="top" aria-hidden="true"></div>
   <header class="navbar">
     <div class="wrap nav-inner">
-      <a class="brand" href="#top"><span class="logo-mark"><i>N</i></span>NORTHFIELD <span>&nbsp;STORE</span></a>
-      <nav aria-label="Page navigation">
-        <a href="#collection">Collection</a>
-        <a href="#process">How it works</a>
-        <a href="#custom">Custom order</a>
-      </nav>
+      <div style="display:flex;align-items:center;">
+        <button class="hamburger" id="hamburger" type="button" aria-label="Open menu"><span></span><span></span><span></span></button>
+        <a class="brand" href="#top"><span class="logo-mark"><i>N</i></span>NORTHFIELD <span>&nbsp;STORE</span></a>
+      </div>
       <a class="btn gold nav-cta" href="https://wa.me/923047938698?text=Hi%2C%20I%27d%20like%20to%20discuss%20a%20website." target="_blank" rel="noopener">WhatsApp <span class="arrow">↗</span></a>
     </div>
   </header>
+
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <aside class="drawer" id="drawer" aria-label="Site menu">
+    <h4>Menu</h4>
+    <a href="#collection" class="drawer-link">Explore Websites</a>
+    <a href="#process" class="drawer-link">How it works</a>
+    <a href="https://wa.me/923047938698?text=Hi%2C%20I%27d%20like%20to%20discuss%20a%20custom%20website." target="_blank" rel="noopener">Custom Website</a>
+    <a href="#feedback" class="drawer-link">Customer Reviews</a>
+    <h4>Categories</h4>
+    <div id="drawer-cats"></div>
+    <h4>Contact</h4>
+    <a class="wa-num" href="https://wa.me/923047938698" target="_blank" rel="noopener">WhatsApp: +92 304 793 8698</a>
+  </aside>
 
   <main>
     <section class="wrap hero">
       <div class="hero-vfx" aria-hidden="true"><span class="hero-glow"></span><i class="particle"></i><i class="particle"></i><i class="particle"></i><i class="particle"></i></div>
       <div class="hero-copy">
+        <div class="hero-logo-wrap"><div class="hero-logo" aria-hidden="true"><b>N</b></div></div>
         <p class="eyebrow"><span class="brand-shimmer brand-big">NORTHFIELD</span><span class="eyebrow-sub">Premium Website Collection</span></p>
         <h1 aria-label="Websites that demand attention."><span class="word">Websites</span> <span class="word">that</span> <span class="word"><em>demand</em></span> <span class="word"><em>attention.</em></span></h1>
       </div>
       <div class="hero-aside">
         <p class="typewriter" id="hero-type">Hand-crafted website concepts with live demos. Preview your favorite, make it yours — delivered ready to launch.</p>
-        <div class="hero-actions">
-          <a class="btn gold" href="#collection">Explore websites <span class="arrow">↓</span></a>
-          <a class="btn" href="#custom">Request custom work</a>
-        </div>
       </div>
     </section>
 
     <section class="wrap section" id="collection">
       <div class="section-heading">
-        <h2>Selected websites</h2>
-        <p>Six distinct directions, crafted for different businesses. Every concept can be adapted with your brand, copy, colors and contact details.</p>
+        <h2>The Collection</h2>
+        <p>A growing library of ready-to-launch website concepts. Browse by category or scroll the full collection — every concept can be adapted with your brand, copy, colors and contact details.</p>
       </div>
+
+      <div class="cat-chips" id="cat-chips" aria-label="Filter by category"></div>
 
       <div class="catalog">
         <article class="product" data-title="Maison Dining" data-description="An editorial restaurant experience with immersive food presentation, a focused menu story and reservation-ready structure.">
@@ -520,34 +577,18 @@
       </div>
     </section>
 
-    <section class="wrap section custom" id="custom">
-      <div class="custom-copy">
-        <p class="eyebrow">Built around your idea</p>
-        <h2>Need something original?</h2>
-        <p>Share the business, style and features you have in mind. We can create a custom website direction beyond the ready-made collection.</p>
-        <a class="btn gold" href="https://wa.me/923047938698?text=Hi%2C%20I%27d%20like%20to%20discuss%20a%20custom%20website." target="_blank" rel="noopener">Discuss a custom website <span class="arrow">↗</span></a>
-      </div>
-      <form class="form" id="feedback-form">
-        <h3>Send your brief</h3>
-        <div class="field"><label for="name">Your name</label><input id="name" name="name" autocomplete="name" required /></div>
-        <div class="field"><label for="business">Business or website type</label><input id="business" name="business" required /></div>
-        <div class="field"><label for="message">What do you need?</label><textarea id="message" name="message" required></textarea></div>
-        <button class="btn gold" type="submit">Continue on WhatsApp <span class="arrow">↗</span></button>
-        <p class="form-note" id="form-note" aria-live="polite">Your message will open in WhatsApp for review before you send it.</p>
-      </form>
-    </section>
-
     <section class="feedback-strip" id="feedback">
       <div class="wrap feedback-inner">
-        <div><p class="eyebrow">Your opinion matters</p><h2>Share feedback</h2><p>Seen something you like—or something we can improve? Send a quick note directly on WhatsApp.</p></div>
+        <div><p class="eyebrow">Public reviews</p><h2>What people say</h2><p>Real feedback from visitors and customers — posted publicly right here on the website. Add yours and it appears instantly.</p></div>
         <form id="feedback-only-form">
           <div class="feedback-fields">
             <div class="field"><label for="feedback-name">Your name</label><input id="feedback-name" name="feedback-name" autocomplete="name" required /></div>
-            <div class="field"><label for="rating">Rating</label><input id="rating" name="rating" inputmode="numeric" placeholder="1–5" required /></div>
+            <div class="field"><label for="rating">Rating</label><select id="rating" name="rating" required><option value="5">★★★★★ — 5</option><option value="4">★★★★ — 4</option><option value="3">★★★ — 3</option><option value="2">★★ — 2</option><option value="1">★ — 1</option></select></div>
             <div class="field wide"><label for="feedback-message">Your feedback</label><textarea id="feedback-message" name="feedback-message" required></textarea></div>
-            <div class="wide"><button class="btn gold" type="submit">Send feedback on WhatsApp <span class="arrow">↗</span></button><p class="form-note" id="feedback-note" aria-live="polite">You can review the message in WhatsApp before sending.</p></div>
+            <div class="wide"><button class="btn gold" type="submit">Post feedback publicly <span class="arrow">↗</span></button><p class="form-note" id="feedback-note" aria-live="polite">Your name, rating and feedback will be visible to everyone on this page.</p></div>
           </div>
         </form>
+        <div class="wall" id="feedback-wall"></div>
       </div>
     </section>
   </main>
@@ -563,6 +604,23 @@
     </div>
   </div>
 
+  <div class="modal" id="reviews-modal" hidden role="dialog" aria-modal="true" aria-labelledby="rev-title">
+    <div class="modal-card">
+      <div class="modal-head"><p id="rev-title">Reviews</p><button class="close" id="rev-close" type="button" aria-label="Close reviews">×</button></div>
+      <div class="modal-body">
+        <div class="rev-list" id="rev-list"></div>
+        <form class="rev-form" id="rev-form">
+          <h3 style="margin:0 0 12px;">Write a review</h3>
+          <div class="field"><label for="rev-name">Your name</label><input id="rev-name" autocomplete="name" required /></div>
+          <div class="field"><label for="rev-rating">Rating</label><select id="rev-rating"><option value="5">★★★★★ — 5</option><option value="4">★★★★ — 4</option><option value="3">★★★ — 3</option><option value="2">★★ — 2</option><option value="1">★ — 1</option></select></div>
+          <div class="field"><label for="rev-text">Your review</label><textarea id="rev-text" required></textarea></div>
+          <button class="btn gold" type="submit">Post review publicly</button>
+          <p class="form-note" id="rev-note" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <script>
     (function () {
       var modal = document.getElementById('demo-modal');
@@ -573,7 +631,7 @@
       var closeButton = document.getElementById('modal-close');
       var previousFocus = null;
       var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var revealItems = document.querySelectorAll('.section-heading, .product, .steps-grid > div, .step, .custom-copy, .form, .feedback-inner > div, .feedback-inner > form');
+      var revealItems = document.querySelectorAll('.section-heading, .product, .steps-grid > div, .step, .feedback-inner > div, .feedback-inner > form');
 
       if (!reduceMotion && 'IntersectionObserver' in window) {
         document.documentElement.classList.add('motion-ready');
@@ -651,24 +709,46 @@
       modal.addEventListener('click', function (event) { if (event.target === modal) closeModal(); });
       document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && !modal.hidden) closeModal(); });
 
-      document.getElementById('feedback-form').addEventListener('submit', function (event) {
-        event.preventDefault();
-        var name = document.getElementById('name').value.trim();
-        var business = document.getElementById('business').value.trim();
-        var message = document.getElementById('message').value.trim();
-        var text = 'Hi, my name is ' + name + '.\n\nBusiness / website type: ' + business + '\n\nProject brief: ' + message;
-        document.getElementById('form-note').textContent = 'Opening your prepared message in WhatsApp…';
-        window.open('https://wa.me/923047938698?text=' + encodeURIComponent(text), '_blank', 'noopener');
-      });
+      /* Hamburger drawer */
+      var hamburger = document.getElementById('hamburger');
+      var drawer = document.getElementById('drawer');
+      var drawerOverlay = document.getElementById('drawer-overlay');
+      function setDrawer(open) {
+        drawer.classList.toggle('open', open);
+        drawerOverlay.classList.toggle('show', open);
+        hamburger.classList.toggle('open', open);
+      }
+      hamburger.addEventListener('click', function () { setDrawer(!drawer.classList.contains('open')); });
+      drawerOverlay.addEventListener('click', function () { setDrawer(false); });
+      drawer.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setDrawer(false); }); });
 
+      /* Supabase feedback wall (public reviews with no product) */
+      var SUPA = 'https://jlpvmxirezcusajzntyx.supabase.co';
+      var SKEY = 'sb_publishable_11BGivBGTP0ZLnLr8aQ0Fw_ce39yK9O';
+      function shead() { return { 'apikey': SKEY, 'Authorization': 'Bearer ' + SKEY, 'Content-Type': 'application/json' }; }
+      function starsStr(n) { var s = ''; n = Math.round(n || 0); for (var i = 0; i < 5; i++) s += i < n ? '★' : '☆'; return s; }
+      function revItemHTML(r) {
+        var d = r.created_at ? new Date(r.created_at).toLocaleDateString() : '';
+        return '<div class="rev-item"><div class="rev-head"><b>' + esc(r.name) + '</b><span>' + starsStr(r.rating) + '</span></div><p>' + esc(r.text) + '</p><small>' + d + '</small></div>';
+      }
+      window.__renderWall = function (reviews) {
+        var wall = document.getElementById('feedback-wall');
+        if (!wall) return;
+        var general = (reviews || []).filter(function (r) { return !r.product_id; }).slice(0, 8);
+        wall.innerHTML = general.length ? general.map(revItemHTML).join('') : '';
+      };
       document.getElementById('feedback-only-form').addEventListener('submit', function (event) {
         event.preventDefault();
         var feedbackName = document.getElementById('feedback-name').value.trim();
-        var rating = document.getElementById('rating').value.trim();
+        var rating = parseInt(document.getElementById('rating').value, 10) || 5;
         var feedbackMessage = document.getElementById('feedback-message').value.trim();
-        var feedbackText = 'Northfield Web Store feedback\n\nName: ' + feedbackName + '\nRating: ' + rating + '/5\n\nFeedback: ' + feedbackMessage;
-        document.getElementById('feedback-note').textContent = 'Opening your feedback in WhatsApp…';
-        window.open('https://wa.me/923047938698?text=' + encodeURIComponent(feedbackText), '_blank', 'noopener');
+        var note = document.getElementById('feedback-note');
+        note.textContent = 'Posting…';
+        fetch(SUPA + '/rest/v1/reviews', { method: 'POST', headers: shead(), body: JSON.stringify({ name: feedbackName, rating: rating, text: feedbackMessage, product_id: null }) })
+          .then(function (r) {
+            if (r.ok) { note.textContent = 'Thank you — your feedback is now public below.'; event.target.reset(); if (window.__loadReviews) window.__loadReviews(); }
+            else { note.textContent = 'Could not post right now — please try again shortly.'; }
+          }).catch(function () { note.textContent = 'Could not post right now — please try again shortly.'; });
       });
 
       /* Supabase live products + auto screenshot previews */
@@ -711,9 +791,11 @@
           ? '<a class="btn demo" href="' + demoUrl + '" target="_blank" rel="noopener">Live Demo</a>'
           : '<button class="btn demo" type="button">Live Demo</button>';
         var wa = 'https://wa.me/923047938698?text=' + encodeURIComponent("Hi, I'm interested in the " + (p.title || 'website') + '.');
-        return '<article class="product" data-title="' + title.replace(/"/g, '&quot;') + '" data-description="' + desc.replace(/"/g, '&quot;') + '">'
+        var views = (typeof p.views === 'number') ? p.views : 0;
+        var stats = '<div class="card-stats"><span class="views">👁 <b class="vcount">' + views + '</b> views</span><span class="stars" data-stars></span><button class="rev-link" type="button" data-reviews>Reviews</button></div>';
+        return '<article class="product" data-id="' + esc(p.id || '') + '" data-category="' + esc(p.category || 'Websites') + '" data-title="' + title.replace(/"/g, '&quot;') + '" data-description="' + desc.replace(/"/g, '&quot;') + '">'
           + previewVisual(p)
-          + '<div class="product-meta"><div><p class="product-index">' + idx + ' · ' + cat + '</p><h3>' + title + '</h3><p class="product-type">' + desc + '</p></div><p class="price">' + price + '</p></div>'
+          + '<div class="product-meta"><div><p class="product-index">' + idx + ' · ' + cat + '</p><h3>' + title + '</h3><p class="product-type">' + desc + '</p>' + stats + '</div><p class="price">' + price + '</p></div>'
           + '<div class="product-actions">' + demoBtn + '<a class="btn gold" href="' + wa + '" target="_blank" rel="noopener">Buy Now <span class="arrow">↗</span></a></div>'
           + '</article>';
       }
@@ -734,6 +816,89 @@
           });
         });
       }
+      var ALL_REVIEWS = [];
+      var currentRevProduct = null;
+      function applyReviewStats() {
+        document.querySelectorAll('.product[data-id]').forEach(function (card) {
+          var pid = card.getAttribute('data-id');
+          var list = ALL_REVIEWS.filter(function (r) { return r.product_id === pid; });
+          var starsEl = card.querySelector('[data-stars]');
+          var revBtn = card.querySelector('[data-reviews]');
+          if (list.length) {
+            var avg = list.reduce(function (s, r) { return s + (r.rating || 0); }, 0) / list.length;
+            if (starsEl) starsEl.textContent = starsStr(avg) + ' ' + avg.toFixed(1);
+            if (revBtn) revBtn.textContent = 'Reviews (' + list.length + ')';
+          } else {
+            if (starsEl) starsEl.textContent = '';
+            if (revBtn) revBtn.textContent = 'Reviews';
+          }
+        });
+      }
+      window.__loadReviews = function () {
+        fetch(SUPA + '/rest/v1/reviews?select=*&order=created_at.desc&limit=500', { headers: shead() })
+          .then(function (r) { return r.ok ? r.json() : []; })
+          .then(function (rows) { ALL_REVIEWS = rows || []; applyReviewStats(); window.__renderWall(ALL_REVIEWS); if (currentRevProduct) renderRevList(); })
+          .catch(function () { /* reviews table may not exist yet */ });
+      };
+      function renderRevList() {
+        var list = ALL_REVIEWS.filter(function (r) { return r.product_id === currentRevProduct; });
+        document.getElementById('rev-list').innerHTML = list.length ? list.map(revItemHTML).join('') : '<p style="color:var(--muted);font-size:.88rem;">No reviews yet — be the first to review this website.</p>';
+      }
+      var revModal = document.getElementById('reviews-modal');
+      function openReviews(card) {
+        currentRevProduct = card.getAttribute('data-id');
+        document.getElementById('rev-title').textContent = (card.getAttribute('data-title') || 'Website') + ' · Reviews';
+        renderRevList();
+        revModal.hidden = false;
+        document.body.classList.add('modal-open');
+      }
+      document.getElementById('rev-close').addEventListener('click', function () { revModal.hidden = true; document.body.classList.remove('modal-open'); });
+      revModal.addEventListener('click', function (e) { if (e.target === revModal) { revModal.hidden = true; document.body.classList.remove('modal-open'); } });
+      document.getElementById('rev-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var note = document.getElementById('rev-note');
+        note.textContent = 'Posting…';
+        fetch(SUPA + '/rest/v1/reviews', { method: 'POST', headers: shead(), body: JSON.stringify({ name: document.getElementById('rev-name').value.trim(), rating: parseInt(document.getElementById('rev-rating').value, 10) || 5, text: document.getElementById('rev-text').value.trim(), product_id: currentRevProduct }) })
+          .then(function (r) { if (r.ok) { note.textContent = 'Posted — thank you!'; e.target.reset(); window.__loadReviews(); } else { note.textContent = 'Could not post right now.'; } })
+          .catch(function () { note.textContent = 'Could not post right now.'; });
+      });
+      function filterCatalog(cat) {
+        document.querySelectorAll('.catalog .product').forEach(function (card) {
+          card.style.display = (!cat || card.getAttribute('data-category') === cat) ? '' : 'none';
+        });
+        document.querySelectorAll('.cat-chip').forEach(function (chip) { chip.classList.toggle('active', (chip.getAttribute('data-cat') || '') === (cat || '')); });
+      }
+      function buildChipsAndCats(products) {
+        var counts = {};
+        products.forEach(function (p) { var c = p.category || 'Websites'; counts[c] = (counts[c] || 0) + 1; });
+        var cats = Object.keys(counts).sort();
+        var chips = document.getElementById('cat-chips');
+        chips.innerHTML = '<button class="cat-chip active" type="button" data-cat="">All websites</button>' + cats.map(function (c) { return '<button class="cat-chip" type="button" data-cat="' + esc(c) + '">' + esc(c) + '</button>'; }).join('');
+        chips.querySelectorAll('.cat-chip').forEach(function (chip) {
+          chip.addEventListener('click', function () { filterCatalog(chip.getAttribute('data-cat') || null); });
+        });
+        var dc = document.getElementById('drawer-cats');
+        dc.innerHTML = cats.map(function (c) { return '<a href="#collection" class="drawer-cat" data-cat="' + esc(c) + '"><span>' + esc(c) + '</span><small>' + counts[c] + ' sites</small></a>'; }).join('');
+        dc.querySelectorAll('.drawer-cat').forEach(function (a) {
+          a.addEventListener('click', function () { filterCatalog(a.getAttribute('data-cat')); });
+        });
+      }
+      function bindViewCounts(scope) {
+        scope.querySelectorAll('a.demo').forEach(function (link) {
+          link.addEventListener('click', function () {
+            var card = link.closest('.product');
+            var pid = card && card.getAttribute('data-id');
+            var vc = card && card.querySelector('.vcount');
+            if (vc) vc.textContent = (parseInt(vc.textContent, 10) || 0) + 1;
+            if (pid) fetch(SUPA + '/rest/v1/rpc/increment_views', { method: 'POST', headers: shead(), body: JSON.stringify({ pid: pid }) }).catch(function () {});
+          });
+        });
+      }
+      function bindReviewButtons(scope) {
+        scope.querySelectorAll('[data-reviews]').forEach(function (btn) {
+          btn.addEventListener('click', function () { openReviews(btn.closest('.product')); });
+        });
+      }
       fetch(SUPABASE_URL + '/rest/v1/products?select=*&order=created_at', {
         headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
       }).then(function (r) { return r.ok ? r.json() : []; }).then(function (products) {
@@ -741,8 +906,12 @@
           var catalog = document.querySelector('.catalog');
           catalog.innerHTML = products.map(buildCard).join('');
           bindDemoButtons(catalog);
+          bindViewCounts(catalog);
+          bindReviewButtons(catalog);
+          buildChipsAndCats(products);
         }
       }).catch(function () { /* keep hardcoded fallback */ });
+      window.__loadReviews();
     }());
   </script>
 </body>
