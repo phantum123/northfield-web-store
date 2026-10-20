@@ -500,10 +500,8 @@
     <section class="wrap section" id="collection">
       <div class="section-heading">
         <h2>The Collection</h2>
-        <p>A growing library of ready-to-launch website concepts. Browse by category or scroll the full collection — every concept can be adapted with your brand, copy, colors and contact details.</p>
+        <p>Ready-to-launch website concepts — pick a category from the ☰ menu or scroll the full collection.</p>
       </div>
-
-      <div class="cat-chips" id="cat-chips" aria-label="Filter by category"></div>
 
       <div class="catalog">
         <article class="product" data-title="Maison Dining" data-description="An editorial restaurant experience with immersive food presentation, a focused menu story and reservation-ready structure.">
@@ -862,17 +860,11 @@
         document.querySelectorAll('.catalog .product').forEach(function (card) {
           card.style.display = (!cat || card.getAttribute('data-category') === cat) ? '' : 'none';
         });
-        document.querySelectorAll('.cat-chip').forEach(function (chip) { chip.classList.toggle('active', (chip.getAttribute('data-cat') || '') === (cat || '')); });
       }
       function buildChipsAndCats(products) {
         var counts = {};
         products.forEach(function (p) { var c = p.category || 'Websites'; counts[c] = (counts[c] || 0) + 1; });
         var cats = Object.keys(counts).sort();
-        var chips = document.getElementById('cat-chips');
-        chips.innerHTML = '<button class="cat-chip active" type="button" data-cat="">All websites</button>' + cats.map(function (c) { return '<button class="cat-chip" type="button" data-cat="' + esc(c) + '">' + esc(c) + '</button>'; }).join('');
-        chips.querySelectorAll('.cat-chip').forEach(function (chip) {
-          chip.addEventListener('click', function () { filterCatalog(chip.getAttribute('data-cat') || null); });
-        });
         var dc = document.getElementById('drawer-cats');
         dc.innerHTML = cats.map(function (c) { return '<a href="#collection" class="drawer-cat" data-cat="' + esc(c) + '"><span>' + esc(c) + '</span><small>' + counts[c] + ' sites</small></a>'; }).join('');
         dc.querySelectorAll('.drawer-cat').forEach(function (a) {
