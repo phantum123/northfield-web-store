@@ -86,16 +86,11 @@
     }
     .brand { display: inline-flex; align-items: center; text-decoration: none; font-family: var(--serif); font-size: 1.12rem; letter-spacing: .14em; color: var(--text); white-space: nowrap; }
     .brand span { color: var(--gold); }
-    .logo-mark { display: inline-flex; width: 32px; height: 32px; margin-right: 10px; align-items: center; justify-content: center; border: 1px solid var(--gold); transform: rotate(45deg); flex: 0 0 auto; overflow: hidden; position: relative; }
-    .logo-mark i { transform: rotate(-45deg); font-style: normal; font-family: var(--serif); font-size: 1rem; color: var(--gold); animation: nFlip 5s ease-in-out infinite; display: inline-block; }
+    .logo-mark { display: inline-flex; width: 32px; height: 32px; margin-right: 10px; align-items: center; justify-content: center; border: 1px solid var(--gold); transform: rotate(45deg); flex: 0 0 auto; overflow: hidden; position: relative; perspective: 200px; }
+    .logo-mark i { font-style: normal; font-family: var(--serif); font-size: 1rem; color: var(--gold); animation: nTilt 4s ease-in-out infinite; display: inline-block; transform-style: preserve-3d; }
     .logo-mark::after { content: ""; position: absolute; inset: -40%; background: linear-gradient(115deg, transparent 42%, rgba(245,214,126,.85) 50%, transparent 58%); transform: translateX(-110%); animation: nShine 3.4s ease-in-out infinite; pointer-events: none; }
     @keyframes nShine { 0% { transform: translateX(-110%); } 55%, 100% { transform: translateX(110%); } }
-    @keyframes nFlip { 0%, 78% { transform: rotate(-45deg); } 88%, 100% { transform: rotate(135deg); } }
-    /* Big hero logo mark */
-    .hero-logo-wrap { display: flex; justify-content: center; margin-bottom: 26px; }
-    .hero-logo { width: 118px; height: 118px; border: 2px solid var(--gold); transform: rotate(45deg); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; box-shadow: 0 0 46px rgba(226,180,90,.28); background: rgba(226,180,90,.05); }
-    .hero-logo b { transform: rotate(-45deg); font-family: var(--serif); font-size: 3.2rem; font-weight: 400; color: var(--gold-strong); animation: nFlip 5s ease-in-out infinite; display: inline-block; }
-    .hero-logo::after { content: ""; position: absolute; inset: -40%; background: linear-gradient(115deg, transparent 40%, rgba(255,240,200,.9) 50%, transparent 60%); transform: translateX(-110%); animation: nShine 3.4s ease-in-out infinite; }
+    @keyframes nTilt { 0%, 100% { transform: rotate(-45deg) rotateY(-26deg) rotateZ(-6deg); } 50% { transform: rotate(-45deg) rotateY(26deg) rotateZ(6deg); } }
     /* Hamburger + drawer */
     .hamburger { display: inline-flex; flex-direction: column; justify-content: center; gap: 5px; width: 42px; height: 42px; padding: 10px; background: transparent; border: 1px solid var(--line-soft); border-radius: 10px; cursor: pointer; margin-right: 12px; }
     .hamburger span { display: block; height: 2px; background: var(--gold); border-radius: 2px; transition: transform .3s ease, opacity .3s ease; }
@@ -143,10 +138,10 @@
       position: relative;
       display: grid;
       grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr);
-      gap: 36px;
+      gap: 24px;
       align-items: center;
       min-height: 0;
-      padding: 34px 0 30px;
+      padding: 18px 0 14px;
       border-bottom: 1px solid var(--line-soft);
       isolation: isolate;
       overflow: hidden;
@@ -165,7 +160,7 @@
     .particle:nth-child(4) { right: 31%; bottom: 17%; animation-delay: -6s; }
     @keyframes drift { 0%, 100% { transform: translateY(0); opacity: .22; } 50% { transform: translateY(-14px); opacity: .72; } }
     .eyebrow { margin: 0 0 10px; color: var(--gold-strong); font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; }
-    .brand-big { font-size: 1.7em; display: inline-block; animation: brandUp .9s cubic-bezier(.2,.7,.2,1) both; }
+    .brand-big { font-size: 1.25em; display: inline-block; animation: brandUp .9s cubic-bezier(.2,.7,.2,1) both; }
     @keyframes brandUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
     .eyebrow-sub { display: block; margin-top: 7px; letter-spacing: .32em; font-size: .85em; }
     .typing::after { content: "▍"; color: var(--gold); animation: blink 1s steps(1) infinite; }
@@ -196,7 +191,7 @@
     }
     @keyframes brandShine { 0%, 18% { background-position: 120% 0; } 55%, 100% { background-position: -120% 0; } }
     h1, h2, h3 { font-family: var(--serif); font-weight: 500; line-height: .98; }
-    h1 { margin: 0; max-width: 850px; font-size: clamp(2.5rem, 5.5vw, 4.6rem); letter-spacing: -.04em; }
+    h1 { margin: 0; max-width: 850px; font-size: clamp(2rem, 4.4vw, 3.4rem); letter-spacing: -.04em; }
     h1 .word { display: inline-block; opacity: 0; transform: translateY(.42em); animation: wordIn .7s cubic-bezier(.2,.7,.2,1) forwards; }
     h1 .word:nth-child(2) { animation-delay: .12s; }
     h1 .word:nth-child(3) { animation-delay: .24s; }
@@ -414,8 +409,8 @@
     }
     @media (max-width: 840px) {
       .navbar nav { display: none; }
-      .hero { grid-template-columns: 1fr; gap: 22px; min-height: auto; padding: 26px 0 24px; }
-      h1 { font-size: clamp(2.3rem, 9vw, 3.6rem); }
+      .hero { grid-template-columns: 1fr; gap: 10px; min-height: auto; padding: 12px 0 10px; }
+      h1 { font-size: clamp(1.85rem, 8vw, 2.5rem); }
       .hero-aside { max-width: 580px; }
       .section-heading { display: block; }
       .section-heading p { margin-top: 18px; }
@@ -429,12 +424,12 @@
       .brand { font-size: .98rem; }
       .nav-cta { min-height: 36px; padding: 6px 12px; font-size: .72rem; }
       .nav-cta .arrow { display: none; }
-      .hero { padding-top: 20px; }
+      .hero { padding-top: 10px; }
       .hero-aside { padding-left: 16px; }
       .hero-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
       .hero-actions .btn { min-height: 46px; padding: 10px 6px; font-size: .76rem; }
       .hero-actions .arrow { display: none; }
-      .section { padding: 38px 0; }
+      .section { padding: 24px 0; }
       .section-heading { margin-bottom: 18px; }
       .section-heading h2 { font-size: clamp(2.2rem, 8vw, 3.2rem); }
       .product { padding: 6px; }
@@ -492,7 +487,6 @@
     <section class="wrap hero">
       <div class="hero-vfx" aria-hidden="true"><span class="hero-glow"></span><i class="particle"></i><i class="particle"></i><i class="particle"></i><i class="particle"></i></div>
       <div class="hero-copy">
-        <div class="hero-logo-wrap"><div class="hero-logo" aria-hidden="true"><b>N</b></div></div>
         <p class="eyebrow"><span class="brand-shimmer brand-big">NORTHFIELD</span><span class="eyebrow-sub">Premium Website Collection</span></p>
         <h1 aria-label="Websites that demand attention."><span class="word">Websites</span> <span class="word">that</span> <span class="word"><em>demand</em></span> <span class="word"><em>attention.</em></span></h1>
       </div>
